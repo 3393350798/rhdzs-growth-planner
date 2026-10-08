@@ -1,0 +1,5 @@
+work/
+发育规划器*.json
+*.backup.json
+.DS_Store
+Thumbs.db

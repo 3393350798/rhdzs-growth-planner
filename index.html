@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>发育全流程规划器</title>
+<style>
+:root{font-family:"Segoe UI","Microsoft YaHei",sans-serif;color:#193b32;background:#f4f6f0;--green:#24684e;--muted:#718074;--line:#dfe6da}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}button,input,select{border:1px solid #cdd9ca;border-radius:8px;background:white;color:inherit;padding:9px 12px}input[type=number],input[type=text],select{width:100%;min-width:0}input[type=checkbox]{accent-color:var(--green)}button:hover{background:#edf4e8}button.primary,nav .active{background:var(--green);color:white}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid #3c9970;outline-offset:3px}header{padding:28px 36px 22px;max-width:1680px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--muted);font-weight:700}h1{font-size:30px;margin:8px 0;letter-spacing:-1px}h2{font-size:20px;margin:0 0 16px}h3{font-size:15px;margin:0 0 12px}p{line-height:1.8}.sub{margin:0;color:var(--muted);font-size:13px}nav{display:flex;gap:7px}main{max-width:1680px;margin:auto;padding:0 36px 40px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:24px;align-items:start}.card{background:white;border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:20px}.toolbar{display:flex;gap:18px;align-items:end;flex-wrap:wrap}.toolbar label{flex:1;min-width:140px}label{display:block;font-size:12px;color:#526a59}label input,label select{margin-top:7px}small,.hint{color:var(--muted);font-size:12px;line-height:1.7}.hint{margin:10px 0}.tag{display:inline-block;border-radius:5px;background:#eef4e8;color:#427251;padding:3px 7px;font-size:11px;white-space:nowrap}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0 0}.stat{border-left:2px solid #d5e5c5;padding-left:15px}.stat span{font-size:12px;color:var(--muted)}.stat strong{display:block;font-size:24px;margin-top:5px}.section-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:25px 0 13px}.section-heading h2{margin:0}.flow{padding:0;list-style:none;margin:0}.phase{background:white;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}.phase summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:13px;padding:17px 18px}.phase summary::-webkit-details-marker{display:none}.phase summary:after{content:'＋';margin-left:auto;color:var(--muted)}.phase details[open]>summary:after{content:'−'}.step-no{display:grid;place-items:center;flex-shrink:0;width:29px;height:29px;border-radius:50%;background:#eff4e9;color:#55714e;font-size:12px;font-weight:700}.phase-name{font-size:14px;font-weight:650}.phase-name small{display:block;font-weight:400;font-size:11px;margin-top:4px}.phase-body{padding:0 18px 14px 60px}.phase-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid #eff2eb;font-size:13px}.phase-item>div{flex:1}.phase-item small{display:block;margin-top:3px}.phase-item input{margin:3px 0 0}.done{text-decoration:line-through;color:#8a9688}.item-value{font-size:11px;color:#6d7f6b;text-align:right;max-width:130px}.notice{padding:13px 16px;background:#edf3e7;border-radius:9px;font-size:12px;line-height:1.8;color:#4c6a47;margin:14px 0}.calc{position:sticky;top:16px}.calc .card{padding:21px}.calc-title{display:flex;justify-content:space-between;align-items:center}.calc h2{font-size:18px;margin-bottom:8px}.calc .stats{grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.calc .stat{padding-left:9px}.calc .stat strong{font-size:20px}.calc-scroll{max-height:470px;overflow:auto;border:1px solid var(--line);border-radius:8px}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:12px}th,td{padding:11px 9px;text-align:right;border-bottom:1px solid #edf0e8}th{font-size:11px;color:var(--muted);background:#f7f9f3;font-weight:500}th:first-child,td:first-child{text-align:left}tr.best{background:#e9f3d9;color:#235e3a}tr.dim{color:#9a9f95}.calc th{position:sticky;top:0}.calc td{font-size:11px}details.explain{font-size:12px;line-height:1.8;color:#657760;margin-top:16px}details.explain summary{cursor:pointer}.fields{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.checks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.checks label{display:flex;align-items:center;gap:7px}.checks input{margin:0}.form-title{margin:22px 0 14px;font-size:14px}.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.table-scroll{overflow:auto;max-height:580px}.table-scroll th{position:sticky;top:0}.order-table td:nth-child(2){text-align:left}.board-and-info{display:grid;grid-template-columns:240px 1fr;gap:22px;align-items:start}.board{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;padding:7px;background:#e8eee2;border-radius:9px;aspect-ratio:1}.cell{display:grid;place-items:center;background:#f7faf2;font-size:10px;border-radius:3px}.cell.speed{background:#d2e6f1;color:#2b5f78}.cell.damage{background:#f2d5c9;color:#9b4e34}.cell.used{border:1px solid #ffffffa0}.mini-shape{display:inline-grid;gap:2px;margin:0 10px 0 0;vertical-align:middle}.mini-shape i{width:9px;height:9px;background:#d5e5ed;border-radius:1px}.mini-shape i.off{visibility:hidden}.mini-shape.damage i{background:#edccbe}.chip-line{display:flex;align-items:center;gap:7px;font-size:12px;margin-bottom:12px}.chip-line>span{flex:1}.chip-line input{width:66px;margin:0;padding:5px}.chip-heading{font-size:13px;margin:14px 0 12px}.save-state{color:#688264;font-size:12px}footer{color:#84907e;font-size:11px;margin-top:24px;line-height:1.8}.progress-track{height:5px;background:#e6eddf;border-radius:4px;overflow:hidden;margin-top:14px}.progress-track i{display:block;height:100%;background:#6d9559}.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}.recommendation{font-size:13px;line-height:1.9}.recommendation strong{color:#235b3b}[hidden]{display:none!important}@media(min-width:1500px){.layout{grid-template-columns:minmax(0,1fr) 410px}}@media(max-width:1100px){header{padding:24px}main{padding:0 24px 30px}.layout{grid-template-columns:minmax(0,1fr) 325px;gap:16px}.fields,.checks{grid-template-columns:repeat(2,1fr)}.board-and-info{grid-template-columns:190px 1fr}.stat strong{font-size:21px}}@media(max-width:800px){header{align-items:flex-start;padding:22px 16px;flex-direction:column;gap:14px}h1{font-size:27px}main{padding:0 16px 28px}.layout{grid-template-columns:1fr}.calc{position:static}.card{padding:18px}.stats{gap:10px}.stat{padding-left:8px}.stat strong{font-size:19px}.phase-body{padding-left:20px}.fields,.checks{grid-template-columns:1fr 1fr}.board-and-info{grid-template-columns:1fr}.board{max-width:240px}.twocol{grid-template-columns:1fr}.toolbar{gap:12px}.phase-name{font-size:13px}.section-heading{flex-wrap:wrap}.item-value{max-width:100px}}
+</style>
+<header><div><div class="eyebrow">GROWTH PLANNER · 32 TICK</div><h1>发育全流程规划</h1><p class="sub">选一把枪，从第一笔进度到完整成型。</p></div><nav><button id="home-tab" class="active">全流程规划</button><button id="config-tab">枪械与规则配置</button></nav></header>
+<main>
+<div class="card"><div class="row"><strong>数据文件</strong><button id="export-data">导出完整备份</button><button id="import-data">导入备份</button><button id="bind-data-file">将当前数据另存为自动保存文件</button><button id="open-data-file">打开文件并自动保存</button><button id="unbind-data-file" hidden>停止文件自动保存</button><input id="data-file-input" type="file" accept=".json,application/json" hidden></div><p id="file-status" class="hint" aria-live="polite">配置和搜索结果目前保存在浏览器内；导出的JSON文件不受清理浏览器网站数据影响。</p><p class="hint">备份包含所有枪械、共享规则、完成勾选及已保存的搜索结果。导入会替换当前枪械与规则。自动保存须选择文件授权；刷新或重开后，点“打开文件并自动保存”重新连接。搜索栈不包含在备份内。</p></div>
+<section id="home-view"><div class="layout"><div>
+<div class="card"><div class="toolbar"><label>发育枪械<select id="weapon-select"></select></label><label>单次射击伤害（未计收割者、未暴击）<input id="quick-damage" type="number" min="0" step="any" placeholder="填写枪械伤害"></label><label>枪械固定普通进度倍率（非毒转化率）<input id="quick-factor" type="number" min="0" step="any" placeholder="每1伤害对应的进度"></label><button id="edit-weapon">编辑这把枪</button></div><div class="stats"><div class="stat"><span>初始实际射速</span><strong id="base-rate"></strong></div><div class="stat"><span>成型平均射速</span><strong id="final-rate"></strong></div><div class="stat"><span>流程完成情况</span><strong id="completion"></strong></div></div><p id="damage-summary" class="hint"></p><div class="progress-track"><i id="completion-bar"></i></div></div>
+<div class="card"><h2>怎样发育更快</h2><div id="evaluation" class="recommendation"></div><div id="hot-comparison" class="notice"></div><div id="comparison" class="notice"></div><div class="row"><label>搜索线程<select id="exact-threads"><option value="auto">自动</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="8">8</option></select></label><button id="exact-start">多线程穷举最优顺序</button><button id="exact-stop" hidden>停止并采用当前结果</button></div><p id="exact-status" class="hint" aria-live="polite"></p><p class="hint">范围：当前已纳入的项目、固定枪械与芯片构筑，按攒够即买及现有熵增策略，最小化核心构筑成型时间。搜索未完成不保证最优；不包含所有芯片布局、主动延迟购买或整局收益。最快路线自动保存在当前浏览器本地；刷新恢复结果，未完成搜索重新开始时沿用已存最快路线，不恢复搜索栈。</p><details class="explain"><summary>查看推荐顺序与时间比较</summary><div id="schedule"></div></details><details class="explain"><summary>计算范围与未确定参数</summary><div id="model-notes"></div></details></div>
+<div class="section-heading"><h2>发育路线</h2><span class="tag">按当前配置推荐排序 · 相邻同类可折叠</span></div><ol id="flow" class="flow"></ol>
+<div class="card"><h2 id="chip-title">芯片构筑 · 6 × 6</h2><p id="chip-hint" class="hint"></p><div class="board-and-info"><div><div id="board" class="board"></div><p id="board-info" class="hint"></p></div><div id="chip-controls"></div></div><div class="row"><button id="suggest-chips">推荐射速与伤害构筑</button><span id="chip-result" class="hint"></span></div></div>
+</div><aside class="calc"><div class="card"><div class="calc-title"><h2>射速计算器</h2><span class="tag">32 TICK</span></div><p class="hint">跟随所选枪械，也可单独输入计算。</p><label>初始间隔 · 秒/发<input id="initial" type="number" min="0" step="any" value="0.21"></label><div class="twocol" style="margin-top:12px"><label>函数触发后 + 芯片加成 %<input id="calc-bonus" type="number" min="0" step="any" value="40"></label><label>熵增状态<select id="calc-entropy"><option value="0">无熵增</option><option value="1">熵增 1</option><option value="2">熵增 2</option></select></label></div><div class="stats"><div class="stat"><span>初始实际射速</span><strong id="calc-base"></strong></div><div class="stat"><span>触发档实际射速</span><strong id="calc-now"></strong></div></div><div class="calc-scroll"><table><thead><tr><th>档位</th><th>发/秒</th><th>净加成阈值</th><th>函数+芯片需</th></tr></thead><tbody id="calc-rows"></tbody></table></div><p id="calc-note" class="hint"></p><details class="explain"><summary>射速公式</summary><p>间隔 = 初始间隔 ÷ (1 + 函数加成 + 芯片加成 + 熵增加成)。实际档位向上取整为整数 tick。</p><p>熵增 1 加 10 个百分点；熵增 2 的减幅可在共享规则中设置。芯片射速没有人为封顶。</p><p>阈值向上保留 0.01 个百分点，避免显示值不足以提档。</p></details></div></aside></div></section>
+<section id="config-view" hidden><div class="card"><div class="toolbar"><label>编辑枪械<select id="config-select"></select></label><button id="add-weapon">新增枪械</button><button id="save-config" class="primary">保存配置并更新规划</button><span id="save-state" class="save-state"></span></div><p class="hint">常规进度加成对所有枪生效；基因进度Buff独立乘1.05。全伤害增加与减少（含Buff类）对所有武器生效，无需勾选；伤害芯片与过载在伤害方案中二选一；不吃伤害芯片的枪选择过载。“射速加成”是总开关，控制射速芯片、熵增的射速增减及热枪速射。关闭时自动取消热枪速射；开启后可单独选择热枪速射。所有枪械均比较熵增1、无熵增、熵增2；全伤变化始终计入。爆炸和穿透等专项适用性仍按枪械配置。配置保存在当前浏览器本地。</p><div id="weapon-fields" class="fields"></div><h3 class="form-title">这把枪能吃到的加成</h3><div id="weapon-checks" class="checks"></div><h3 class="form-title">暴击与实际覆盖率</h3><div id="crit-fields" class="fields"></div></div>
+<div class="card"><h2>共享规则</h2><p class="hint">空白表示未知。未确定成本或收益的项目保留在流程里，暂不参与耗时比较。</p><div id="rule-fields" class="fields"></div><h3 class="form-title">计算口径</h3><div id="rule-options" class="fields"></div></div><div class="card"><h2>数据与假设</h2><div id="config-notes" class="recommendation"></div><button id="save-bottom" class="primary">保存配置并更新规划</button></div></section>
+<footer>按你的教程、截图与补充规则计算。基因震爆器与沃陶姆逐段模拟积累和增幅，基础伤害采用期望DPS；未进行游戏内实测。完成勾选仅记录流程，不代表重算中途最优路线。</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const fmt=(x,d=2)=>Number(x).toLocaleString('zh-CN',{maximumFractionDigits:d,useGrouping:false});
+const ceil=x=>Math.ceil(x-4*Number.EPSILON*Math.max(1,Math.abs(x)));
+const pct=x=>fmt(Math.max(0,ceil(x*100)/100))+'%';
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const KEY='growth-planner-v2';
+const FLAGS={speed:'射速加成（总开关）',function:'热枪速射（暴击触发）',crit:'暴击 / 爆伤',penetration:'穿透增伤',powder:'火药扩容（爆炸伤害）',trigger:'连携扳机',bullet:'子弹 AOE',element:'元素 AOE'};
+const DEFAULT_RULES={reaperCost:4000,quickCost:4000,commandCost:8000,poisonCost:4000,functionCost:3000,collapseCost:4000,entropy1Cost:0,entropy2Cost:0,entropy2Speed:-7,powderCost:4000,triggerCost:4000,overloadCost:4000,warriorCost:8000,votCost:4000,chipDamageCap:30};
+function makeWeapon(name='新枪械'){return{id:'w'+Date.now(),name,interval:.21,damage:null,progressFactor:null,damagePlan:'chips',collapsePlan:'off',critChance:10,critMultiplier:1.35,penetrationShare:0,explosionShare:null,triggerGain:0,flags:Object.fromEntries(Object.keys(FLAGS).map(k=>[k,!['powder','trigger','penetration'].includes(k)])),chips:[0,2,1,0,1,3],done:{}}}
+const first=makeWeapon('完美火神（示例，可修改）');
+const stored=localStorage.getItem(KEY);
+let data=stored?JSON.parse(stored):{weapons:[first],selected:first.id,rules:{...DEFAULT_RULES}};
+// 给已保存的枪械补上本次新增选项，保留原有配置。
+for(const w of data.weapons){delete w.recycleUptime;delete w.killStacks;if(!w.flags.speed)w.flags.function=false;delete w.flags.speedChip;delete w.flags.entropy;delete w.flags.allDamageGain;delete w.flags.allDamageReduction;delete w.flags.warrior;w.damagePlan=w.flags.damageChip===false&&w.flags.overload!==false?'overload':(w.damagePlan??'chips');delete w.flags.damageChip;delete w.flags.overload;w.collapsePlan??='off';w.damage??=null;w.progressFactor??=null;w.explosionShare??=null;delete w.votUptime;delete w.geneReduction;delete w.flags.reaper;delete w.flags.vot}
+// 将历史猜测默认值一次性更新为已确认值，保留其他自定义倍率。
+if(!data.critBase135){for(const w of data.weapons)if(w.critMultiplier===1.5||w.critMultiplier===undefined)w.critMultiplier=1.35;data.critBase135=true;localStorage.setItem(KEY,JSON.stringify(data))}
+// 购买成本4000；30000仅为伤害触发阈值。修复上一版误写的成本。
+if(!data.votCost4000Confirmed){data.rules.votCost=4000;data.votCost4000Confirmed=true;localStorage.setItem(KEY,JSON.stringify(data))}
+if(!data.triggerDefaultZero){for(const w of data.weapons)if(w.triggerGain===2||w.triggerGain===undefined)w.triggerGain=0;data.triggerDefaultZero=true;localStorage.setItem(KEY,JSON.stringify(data))}
+delete data.rules.damageMode;delete data.rules.geneProgressMode;delete data.rules.buffMode;delete data.rules.critMode;
+data.rules.collapseCost??=4000;delete data.rules.collapseMode;
+// 旧伤害输入已含常驻一层，将其一次性还原为未计收割者的伤害。
+if(!data.reaperBaseExplicit){if(stored)for(const w of data.weapons)if(w.damage>0)w.damage=Number((w.damage/1.025).toPrecision(12));data.reaperBaseExplicit=true;localStorage.setItem(KEY,JSON.stringify(data))}
+const rules=()=>data.rules,weapon=()=>data.weapons.find(w=>w.id===data.selected);
+function save(){localStorage.setItem(KEY,JSON.stringify(data));queueFileSave()}
+function numberField(key,label,value,placeholder='待填写'){return `<label>${label}<input data-key="${key}" type="number" step="any" value="${value??''}" placeholder="${placeholder}"></label>`}
+function selectField(key,label,value,options){return `<label>${label}<select data-key="${key}">${options.map(([v,t])=>`<option value="${v}" ${v===value?'selected':''}>${t}</option>`).join('')}</select></label>`}
+function setView(config){$('home-view').hidden=config;$('config-view').hidden=!config;$('home-tab').classList.toggle('active',!config);$('config-tab').classList.toggle('active',config);if(config)renderConfig();window.scrollTo(0,0)}
+function selectors(){for(const id of ['weapon-select','config-select'])$(id).innerHTML=data.weapons.map(w=>`<option value="${w.id}" ${w.id===data.selected?'selected':''}>${esc(w.name)}</option>`).join('')}
+const RULE_FIELDS=[['reaperCost','收割者文物 · 进度'],['quickCost','快手 · 进度'],['commandCost','指挥妖精 · 进度'],['nextRound','距首次有效回合结算 · 秒'],['roundLength','后续回合间隔 · 秒（估计）'],['poisonCost','基因震爆器 · 进度'],['functionCost','函数每层 · 进度'],['collapseCost','概率坍缩 · 进度'],['entropy2Speed','熵增 2 射速加成 %'],['powderCost','火药扩容 · 进度'],['overloadCost','过载 · 进度'],['triggerCost','连携扳机 · 进度'],['warriorCost','勇士妖精 · 进度'],['votCost','沃陶姆现实透孔仪 · 进度'],['chipDamageCap','伤害芯片上限 %']];
+function renderConfig(){selectors();const w=weapon(),r=rules();
+  $('weapon-fields').innerHTML=`<label>枪械名称<input data-key="name" type="text" value="${esc(w.name)}"></label>`+numberField('interval','初始射击间隔 · 秒/发',w.interval)+numberField('damage','单次射击伤害（未计收割者、未暴击）',w.damage)+numberField('progressFactor','枪械固定普通进度倍率 · 进度/伤害（非3%毒转化率）',w.progressFactor)+numberField('explosionShare','总伤害中爆炸伤害占比 %（火药扩容）',w.explosionShare,'纯爆炸填100，无爆炸填0')+numberField('triggerGain','连携扳机有效增伤 %（默认0，副作用可填负值）',w.triggerGain)+selectField('damagePlan','伤害方案（二选一）',w.damagePlan,[['chips','伤害芯片'],['overload','过载']]);
+  $('weapon-checks').innerHTML=Object.entries(FLAGS).map(([k,v])=>`<label><input type="checkbox" data-flag="${k}" ${w.flags[k]?'checked':''}>${v}</label>`).join('');
+  const speedBox=$('weapon-checks').querySelector('[data-flag="speed"]'),hotBox=$('weapon-checks').querySelector('[data-flag="function"]');
+  const syncHot=()=>{hotBox.disabled=!speedBox.checked;if(!speedBox.checked)hotBox.checked=false};speedBox.onchange=syncHot;syncHot();
+  $('crit-fields').innerHTML=numberField('critChance','基础暴击率 %',w.critChance)+numberField('critMultiplier','初始暴击总倍率（已确认默认 1.35）',w.critMultiplier)+selectField('collapsePlan','概率坍缩购买方案',w.collapsePlan,[['off','不购买（默认）'],['on','购买：暴击总倍率降为1.0']])+numberField('penetrationShare','穿透后伤害占比 %（无穿透默认 0）',w.penetrationShare);
+  $('rule-fields').innerHTML=RULE_FIELDS.filter(([k])=>useOverload()?k!=='chipDamageCap':k!=='overloadCost').map(([k,l])=>numberField(k,l,r[k])).join('');
+  $('weapon-fields').querySelector('[data-key="damagePlan"]').onchange=saveConfig;
+  $('rule-options').innerHTML=selectField('roundRewards','剩余有效结算次数（不含第6回合结束）',String(r.roundRewards??5),Array.from({length:6},(_,i)=>[String(i),`${i} 次 · 最多 ${i*3000} 进度`]));
+  $('config-notes').innerHTML='<p>快手和指挥的进度加成相加。基因震爆器规则已更正：4000进度购买，持有后 Buff 全伤−1.7%；3%实际伤害转为毒进度，可花4000进度提升至4.5%（仅一次），毒进度不吃进度加成，满500后触发进度速度+5%，持续10秒且CD10秒，期间不积累毒进度。旧的一次性路线奖励已取消。基因的普通进度Buff已确认独立乘区：已有进度速度×1.05；快手与指挥仍在原进度区相加。射速芯片无封顶；伤害芯片封顶 30%。</p><p>熵增 1 为 +10% 射速、−2% 全伤；熵增 2 为 −7% 射速、+1% 全伤，均不消耗进度。分解熵增1和购买熵增2是两个独立操作，中间可保持无熵增。函数四项每层均 3000；热枪速射为暴击后提供每层10%射速，持续3秒、再次暴击刷新，按触发覆盖率计算，不能视为始终常驻；穿透每层 +10%，只影响穿透后的伤害。绝大多数枪械无穿透属性，默认不勾选穿透增伤，穿透伤害占比为 0%；穿透函数首层仍可用于凑四件套。</p><p>暴击率默认 10%；初始暴击总倍率已确认为 1.35 倍。两种函数各有4级：回收聚积按等级将暴击倍率乘1.10/1.20/1.30/1.40；杀伤递增升级只将每层所需射击次数降为16/12/8/4次，每个叠层固定加0.10暴击倍率，最多5层。先加杀伤，再乘回收。回收聚积覆盖率已确认固定100%，不再估计或配置。四件套需要射速、穿透、回收、杀伤各至少一层，凑齐后杀伤递增按满 5 层。杀伤递增按当前等级每16/12/8/4次射击叠1层，最多5层；四件套前暴击消耗层数但保留未满当前阈值的计数，按射击与暴击序列计算收益。爆发射击两件套累计5秒获得一个必暴Buff，攻击消耗后重新计时，持有期间不累计；自然暴击不重置计时。按攻击时点计算必暴消耗及热枪刷新。多弹丸按开火次数计数，必暴Buff使整次攻击必暴；自然暴击的多弹丸判定及停火边界尚未逐段模拟。</p><p>指挥妖精保留 +15% 进度加成，并在持有后的有效回合结算获得3000进度。游戏6回合，最多计前5次结算。填写枪械伤害、固定进度倍率、首次结算时间和后续间隔后才能计算领取时点；未填写时不会把最高15000提前当作收益。</p><p>收割者与沃陶姆属于Buff增伤，基因震爆器属于Buff减伤，Buff是独立乘区，合计增伤上限10%。已确认全伤害增加与减少均对所有武器生效，包括Buff类与非Buff类。收割者、沃陶姆、基因减伤、勇士妖精和熵增全伤变化不再设置逐枪免疫。Buff内增减伤合计后上限10%，Buff、伤害芯片和文物分别相乘；文物区内加算，熵增全伤增减也计入文物区。伤害芯片与过载二选一：选择伤害芯片时按构筑发育，选择过载时获得全伤+2.5%，不配置伤害芯片。不吃伤害芯片的枪选择过载，射速芯片仍可使用。熵增1的−2%全伤、熵增2的+1%全伤对所有武器生效。</p><p>概率坍缩成本4000：每次未暴击射击后暴击率加8个百分点，暴击后清空层数。暴击总倍率确认为1.0，原始1.35倍及额外爆伤均消失；默认不购买，可逐枪启用。热枪与概率坍缩采用持续射击、每发一次判定的稳态近似，未模拟开局启动、换弹停火或多段命中。</p><p>火药扩容：4000进度，爆炸伤害+5%、爆炸范围+10%。整体伤害收益暂按5%×爆炸伤害占比折算，例如占比40%时整体+2%。未量化范围扩大带来的额外命中和伤害衰减变化，不将+10%范围当成+10%伤害。纯爆炸武器占比填100%，混合伤害按实际占比填写；原教程的适配条件仍通过逐枪勾选控制。</p><p>沃陶姆现实透孔仪成本4000进度：购买后累计造成30000伤害触发5%全伤Buff，持续10秒，增幅期间不积累下一次触发进度。结束后从0重新积累，不额外假设冷却时间。其伤害增幅会影响正常进度和基因毒进度的积累速度。基因震爆器按当前DPS连续积累毒进度，并逐段模拟10秒Buff/CD，不能在CD中攒进度。收割者默认一层常驻+2.5%，购买4000进度文物后额外一层+2.5%，两层合计+5%。枪械伤害填写未计任何收割者层数的未暴击单次总伤害，模型自动计入两层；旧版已含默认一层的伤害会一次性除以1.025迁移；不额外计算叠层等待时间或覆盖率损失，DPS包含暴击期望；固定进度倍率表示每1伤害对应多少进度。将3%伤害转为毒进度仅用于计量积累，不额外扣除3%伤害。子弹和元素 AOE 固定最后。示例枪械的适用勾选可修改；回收聚积覆盖率固定100%。</p>';
+}
+function saveConfig(){const w=weapon();for(const box of ['weapon-fields','crit-fields'])for(const input of $(box).querySelectorAll('input,select'))w[input.dataset.key]=input.type==='text'||input.tagName==='SELECT'?input.value:(input.value===''?null:Number(input.value));for(const c of $('weapon-checks').querySelectorAll('input'))w.flags[c.dataset.flag]=c.checked;for(const input of $('rule-fields').querySelectorAll('input'))rules()[input.dataset.key]=input.value===''?null:Number(input.value);for(const input of $('rule-options').querySelectorAll('select'))rules()[input.dataset.key]=input.value;save();selectors();renderHome();renderConfig();$('save-state').textContent='已保存在本机 · '+new Date().toLocaleTimeString('zh-CN')}
+function useOverload(){return weapon().damagePlan==='overload'}
+function plannedChips(){return weapon().chips.map((n,i)=>useOverload()&&i>=3?0:n)}
+// 每个坐标对应棋盘的一整格；3级射速为截图的Z形五格，3级伤害为十字五格。
+const CHIPS=[{name:'1级射速',kind:'speed',gain:.5,cost:2000,shape:[[0,0]]},{name:'2级射速',kind:'speed',gain:4.5,cost:4000,shape:[[0,0],[1,0],[2,0]]},{name:'3级射速',kind:'speed',gain:10,cost:8000,shape:[[2,0],[0,1],[1,1],[2,1],[0,2]]},{name:'1级伤害',kind:'damage',gain:.75,cost:2000,shape:[[0,0]]},{name:'2级伤害',kind:'damage',gain:3.75,cost:4000,shape:[[1,0],[0,1],[1,1]]},{name:'3级伤害',kind:'damage',gain:8.75,cost:8000,shape:[[1,0],[0,1],[1,1],[2,1],[1,2]]}];
+function variations(shape){const out=[],seen=new Set();for(let t=0;t<4;t++){let a=shape.map(p=>p.slice());for(let i=0;i<t;i++)a=a.map(([x,y])=>[-y,x]);const mx=Math.min(...a.map(p=>p[0])),my=Math.min(...a.map(p=>p[1]));a=a.map(([x,y])=>[x-mx,y-my]).sort((a,b)=>a[1]-b[1]||a[0]-b[0]);const k=JSON.stringify(a);if(!seen.has(k)){seen.add(k);out.push(a)}}return out}
+const placements=CHIPS.map(c=>variations(c.shape).flatMap(s=>{const ar=[];for(let y=0;y<6-Math.max(...s.map(p=>p[1]));y++)for(let x=0;x<6-Math.max(...s.map(p=>p[0]));x++){const cells=s.map(([dx,dy])=>(y+dy)*6+x+dx);ar.push({cells,mask:cells.reduce((m,c)=>m|(1n<<BigInt(c)),0n)})}return ar}));
+const packCache=new Map();
+function pack(counts){const key=counts.join(',');if(packCache.has(key))return packCache.get(key);const pieces=[];counts.forEach((n,i)=>{for(let k=0;k<n;k++)pieces.push(i)});pieces.sort((a,b)=>CHIPS[b].shape.length-CHIPS[a].shape.length||b-a);if(pieces.reduce((a,i)=>a+CHIPS[i].shape.length,0)>36)return{status:'over',cells:[]};let nodes=0,cut=false;const result=[];
+  function dfs(depth,used,prev){if(depth===pieces.length)return true;if(++nodes>30000){cut=true;return false}const i=pieces[depth],start=depth>0&&pieces[depth-1]===i?prev+1:0;for(let j=start;j<placements[i].length;j++){const p=placements[i][j];if((used&p.mask)!==0n)continue;result.push({i,cells:p.cells});if(dfs(depth+1,used|p.mask,j))return true;result.pop();if(cut)return false}return false}
+  const ok=dfs(0,0n,0),answer={status:ok?'ok':cut?'unknown':'impossible',cells:ok?result.slice():[]};packCache.set(key,answer);return answer;
+}
+function chipSum(counts,kind){return counts.reduce((s,n,i)=>s+(CHIPS[i].kind===kind?n*CHIPS[i].gain:0),0)}
+function chipCandidates(gain,kind){const off=kind==='speed'?0:3,list=[];for(let c=0;c<=7;c++)for(let b=0;b<=12;b++)for(let a=0;a<=36;a++){const area=5*c+3*b+a,val=c*CHIPS[off+2].gain+b*CHIPS[off+1].gain+a*CHIPS[off].gain;if(area<=36&&val+1e-9>=gain)list.push({v:[a,b,c],area,cost:a*2000+b*4000+c*8000,gain:val})}return list.sort((a,b)=>a.cost-b.cost||a.area-b.area||a.gain-b.gain)}
+function ticks(w,speed,entropy=0){const m=1+speed/100+(entropy===1?.1:entropy===2?rules().entropy2Speed/100:0);return Math.max(1,ceil(32*w.interval/m))}
+function needed(w,n,entropy){return Math.max(0,(32*w.interval/n-1-(entropy===1?.1:entropy===2?rules().entropy2Speed/100:0))*100)}
+function suggestChips(){const w=weapon(),r=rules(),fn=w.flags.speed&&w.flags.function?40:0,e=w.flags.speed?1:0,damageGoal=!useOverload()?r.chipDamageCap:0;
+  const damages=damageGoal?chipCandidates(damageGoal,'damage'):[{v:[0,0,0],area:0,cost:0}];let chosen=null;
+  for(let n=ticks(w,fn+(w.flags.speed?70.5:0),e);n<=ticks(w,fn,e);n++){
+    const need=Math.max(0,needed(w,n,e)-fn),speeds=w.flags.speed?chipCandidates(need,'speed'):(need===0?[{v:[0,0,0],area:0,cost:0}]:[]);
+    const pairs=[];for(const s of speeds.slice(0,24))for(const d of damages.slice(0,24))if(s.area+d.area<=36)pairs.push({counts:s.v.concat(d.v),cost:s.cost+d.cost});pairs.sort((a,b)=>a.cost-b.cost);
+    for(const pair of pairs){if(pack(pair.counts).status==='ok'){chosen=pair;break}}if(chosen)break;
+  }
+  if(chosen){w.chips=chosen.counts;save();renderHome();$('chip-result').textContent='已生成可摆放方案：优先保留伤害目标，再争取热枪触发时的更快档位；平均射速另按覆盖率计算。'}else $('chip-result').textContent='本次搜索未找到满足目标的构筑，可手动调整。';
+}
+function shapeIcon(c){const width=Math.max(...c.shape.map(p=>p[0]))+1,height=Math.max(...c.shape.map(p=>p[1]))+1;let str='';for(let y=0;y<height;y++)for(let x=0;x<width;x++)str+=`<i class="${c.shape.some(p=>p[0]===x&&p[1]===y)?'':'off'}"></i>`;return `<span class="mini-shape ${c.kind}" style="grid-template-columns:repeat(${width},9px)">${str}</span>`}
+function renderChips(){$('chip-title').textContent=useOverload()?'射速芯片构筑 · 6 × 6':'芯片构筑 · 6 × 6';$('chip-hint').textContent='按截图形状摆放，可旋转、不可翻面。'+(useOverload()?'蓝色为射速芯片。':'蓝色为射速，红色为伤害。')+'相同编号属于同一块芯片。';$('suggest-chips').textContent=useOverload()?'推荐射速构筑':'推荐射速与伤害构筑';const w=weapon(),counts=plannedChips(),p=pack(counts),cells=Array(36).fill(null);p.cells.forEach((c,i)=>c.cells.forEach(x=>cells[x]={...c,id:i+1}));$('board').innerHTML=cells.map(c=>`<div class="cell ${c?CHIPS[c.i].kind+' used':''}" title="${c?CHIPS[c.i].name+' #'+c.id:'空位'}">${c?c.id:''}</div>`).join('');const speed=chipSum(w.chips,'speed'),damage=Math.min(rules().chipDamageCap,chipSum(counts,'damage')),cost=counts.reduce((s,n,i)=>s+n*CHIPS[i].cost,0);$('board-info').textContent=`射速 +${fmt(speed)}%${useOverload()?'':' · 伤害芯片面板 +'+fmt(damage)+'%'} · ${cost} 进度。`+(p.status==='ok'?'图中为可摆放方案。':p.status==='over'?'数量超过36格，未计入耗时比较。':p.status==='impossible'?'这些形状无法放入棋盘，未计入耗时比较。':'限定搜索内未找到布局，不等于一定放不下；未计入耗时比较。');$('chip-controls').innerHTML=(useOverload()?CHIPS.slice(0,3):CHIPS).map((c,i)=>(i===0||i===3?`<h3 class="chip-heading">${c.kind==='speed'?'射速芯片 · 无封顶':'伤害芯片 · 上限 '+rules().chipDamageCap+'%'}</h3>`:'')+`<label class="chip-line">${shapeIcon(c)}<span>${c.name} · +${c.gain}%<small> / ${c.cost} 进度 · ${c.shape.length} 格</small></span><input type="number" min="0" max="36" step="1" data-chip="${i}" value="${w.chips[i]}"></label>`).join('');for(const input of $('chip-controls').querySelectorAll('input'))input.onchange=()=>{w.chips[Number(input.dataset.chip)]=Math.max(0,Math.min(36,Math.floor(Number(input.value))));save();renderHome()}}
+const PHASES=[['收割者及文物','收割者叠层容易，按全程常驻计算'],['发育文物','快手 → 指挥妖精 → 基因震爆器'],['射速发育','热枪速射 → 芯片，区分触发档与覆盖率'],['伤害芯片 / 过载','二选一，整条发育路线固定方案'],['熵增调整','分解与购买分别择时，中间可保持无熵增'],['爆伤发育','回收聚积、杀伤递增与四件套'],['全伤倍率','按枪械适用性选择'],['子弹 AOE','固定放在核心发育之后'],['元素 AOE','默认最后补充']];
+function buildItems(){const w=weapon(),r=rules(),items=[],f=w.flags;
+  function add(id,name,phase,cost,route,detail,change={},deps=[],enabled=true,reason=''){items.push({id,name,phase,cost,route,detail,change,deps,enabled,reason})}
+  add('reaperBase','收割者默认一层 · +2.5%',0,null,'relic','默认可叠一层，常驻Buff增伤+2.5%，已自动计入DPS与进度速度，不额外计算叠层等待时间。输入伤害无需包含这一层。');
+  add('reaper','收割者文物 · 额外一层',0,r.reaperCost,'relic','消耗4000进度再叠一层+2.5%，收割者合计两层+5%。两层按同一Buff叠层相加，与其他Buff在同一Buff区合计，增伤上限10%，独立于芯片及文物。',{reaper:1},[],true);
+  add('quick','快手',1,r.quickCost,'relic','所有枪械享受 +10% 进度。',{quick:1});
+  add('command','指挥妖精',1,r.commandCost,'relic',`所有枪械享受 +15% 进度，与快手相加。持有时每回合结束另得 3000 进度；全局 6 回合，最多 5 次，共 15000。当前剩余 ${r.roundRewards??5} 次有效结算。`,{command:1});
+  add('poison','基因震爆器',1,r.poisonCost,'relic','先花4000进度购买，购入后才从0开始积累毒进度；所有武器承受 Buff 全伤 −1.7%（计入独立Buff区）；3%伤害积累为毒进度，每满500触发进度速度+5%，持续/CD均10秒，期间停止积累。',{poison:1},[],true,damageMissing());
+  add('poisonUpgrade','毒进度转化率提升',1,4000,'relic','先购买基因震爆器，再额外花4000进度一次性升级（累计8000进度）：伤害转毒进度比例3%→4.5%；毒进度不吃任何进度加成。已有毒进度保留，10秒Buff/CD期间仍停止积累。',{poisonUpgrade:1},['poison']);
+  add('entropy1','熵增 1 · 免费临时加速',2,r.entropy1Cost,'relic','射速 +10%，全伤 −2%对所有武器生效。按最终秒伤选择状态。',{},[],true,'免费状态随每一步比较，不列为付费项目');
+  const functionCount=f.speed&&f.function?4:f.crit?1:0;
+  for(let i=1;i<=functionCount;i++)add('function'+i,`热枪速射 ${i}/4`,2,r.functionCost,'function',`暴击后射速 +${i*10}%，持续3秒，再次暴击刷新；不直接视为常驻。不吃热枪射速的枪可用首层凑套装。`,{function:i},i>1?['function'+(i-1)]:[]);
+  add('collapse','概率坍缩',2,r.collapseCost,'relic','每次未暴击射击后暴击率+8个百分点，暴击后清层。暴击总倍率降为1.0，包括原始1.35倍和额外爆伤；暴击仍触发热枪。',{collapse:1},[],f.crit,w.collapsePlan!=='on'?'当前方案不购买，可查看购买前后比较':'');
+  const counts=plannedChips(),validChips=pack(counts).status==='ok';let sn=0,dn=0;
+  for(const i of [2,1,0,5,4,3])for(let n=0;n<counts[i];n++){const c=CHIPS[i],fast=i<3,k=fast?++sn:++dn;add((fast?'sc':'dc')+k,c.name+' #'+k,fast?2:3,c.cost,'chip',`+${c.gain}%${fast?'射速':'伤害'} · ${c.shape.length} 格`,{[fast?'speedChip':'damageChip']:c.gain},[],fast?f.speed:true,validChips?'':'构筑尚未找到可用布局')}
+  add('entropy1Remove','分解熵增 1',4,0,'relic','移除+10%射速与−2%全伤；独立决定分解时点，可先保持无熵增，不要求立即购买熵增2。',{},[],true,'与购买熵增2分开判断，不消耗进度、无返还');
+  add('entropy2','购买熵增 2',4,r.entropy2Cost,'relic',`全伤 +1%，射速 ${r.entropy2Speed}%，弹容 +10%；独立决定购买时点，如掉档可先保持无熵增、补完射速再买。`,{},[],true,'按当前DPS单独判断，不要求与分解熵增1同时进行');
+  for(let i=1;i<=(f.penetration?4:f.crit?1:0);i++)add('penetration'+i,`穿透增伤 ${i}/4`,5,r.functionCost,'function',`穿透后的伤害累计 +${i*10}%；首层是四件套组件。`,{penetration:i},i>1?['penetration'+(i-1)]:[],true,f.penetration&&w.penetrationShare===null?'穿透伤害占比未知':'');
+  const critMissing=[w.critChance,w.critMultiplier].some(x=>x===null);
+  for(const kind of ['recycle','kill'])for(let i=1;i<=4;i++)add(kind+i,`${kind==='recycle'?'回收聚积':'杀伤递增'} ${i}/4`,5,r.functionCost,'function',kind==='recycle'?`暴击倍率乘${fmt(1+i*.1,2)}，覆盖率100%；作用于初始倍率与杀伤加算后的总和。`:`每射击${20-4*i}次叠1层，每层固定加0.10暴击倍率、最多5层；攻击先结算伤害并消耗原有层数，再计数获得新层，射击余数保留。升级只加快叠层，四件套满层后不提高稳态爆伤。`,{[kind]:i},i>1?[kind+(i-1)]:[],f.crit,critMissing?'暴击基础数据未知':'');
+  add('powder','火药扩容',6,r.powderCost,'relic',`爆炸伤害 +5%，爆炸范围 +10%。${w.explosionShare===null?'填写该枪爆炸伤害占比后计算整体DPS收益。':`爆炸伤害占比 ${w.explosionShare}%，估计整体伤害 +${fmt(.05*w.explosionShare)}%。`}范围收益不直接折算为DPS。`,{powder:1},[],f.powder,w.explosionShare===null?'爆炸伤害占比待填':'');
+  if(useOverload())add('overload','过载',3,r.overloadCost,'relic','全伤 +2.5%，计入文物乘区。',{overload:1});
+  add('trigger','连携扳机',6,r.triggerCost,'relic','有效增伤默认0%；绝大多数枪械有副作用，按实际净收益填写，可填负值。',{trigger:1},[],f.trigger,w.triggerGain===null?'有效增伤未知':'');
+  add('warrior','勇士妖精',6,r.warriorCost,'relic','全伤 +3%，对所有武器生效。',{warrior:1},[],true);
+  add('vot','沃陶姆现实透孔仪',6,r.votCost,'relic','购买后累计造成30000伤害，获得5%全伤Buff，持续10秒；增幅期间不积累下一次沃陶姆进度。对所有武器适用，Buff为独立乘区，合计增伤上限10%。',{vot:1},[],true,damageMissing());
+  for(const [id,name,detail] of [['humming','蜂鸣指令','140 伤害 / 2 秒，理论 70 DPS。'],['explosive','爆炸子弹','160 伤害 / 2 秒，理论 80 DPS。'],['earth','地龙惊破','最多 5 × 100 伤害 / 3 秒，理论约 166.67 DPS。'],['blast','爆破','200 伤害 / 2 秒，理论 100 DPS。']])add(id,name,7,null,'relic',detail,{},[],f.bullet,'按要求固定末尾');
+  add('element','元素 AOE',8,null,'relic','用于元素反应和辅助，按需要最后补充。',{},[],f.element,'按要求固定末尾');return items;
+}
+function state(){return{quick:0,command:0,poison:0,poisonUpgrade:0,collapse:0,function:0,speedChip:0,damageChip:0,reaper:0,recycle:0,kill:0,penetration:0,powder:0,overload:0,trigger:0,warrior:0,vot:0}}
+function apply(s,a){const n={...s};for(const [k,v]of Object.entries(a.change))n[k]=(k==='speedChip'||k==='damageChip')?n[k]+v:v;return n}
+const combatCache=new Map();
+// carry为上次暴击后的射击余数；余数为0时，阈值当发在伤害后新叠的一层保留。
+function killStacksBefore(carry,misses,every){return Math.min(5,Math.floor((carry+misses)/every)+(carry===0?1:0))}
+// 暴击间隔的更新过程：暴击刷新3秒热枪；未暴击则推进时间及概率坍缩层数。
+// 必暴消耗到下次必暴消耗构成一个周期；自然暴击不重置5秒计时。
+function guaranteedCycle(offTicks,onTicks,p,hot,collapse,trackKill,killEvery){
+  let states=new Map([[`0,${hot?96:0},0,0`,1]]),shots=0,totalTicks=0,hotTicks=0,crits=0;
+  const rewards=Array(killEvery).fill(0),ends=new Set();
+  while(states.size){
+    const next=new Map();
+    const add=(t,h,m,phase,weight)=>{if(!weight)return;const key=`${t},${h},${m},${phase}`;next.set(key,(next.get(key)||0)+weight)};
+    for(const [key,weight]of states){
+      const [elapsed,remaining,misses,phase]=key.split(',').map(Number);
+      const gap=remaining>=onTicks?onTicks:remaining>0?remaining+ceil((1-remaining/onTicks)*offTicks):offTicks;
+      const time=elapsed+gap,forced=time>=160,chance=forced?1:Math.min(1,p+(collapse?misses*.08:0));
+      shots+=weight;totalTicks+=weight*gap;hotTicks+=weight*Math.min(gap,remaining);crits+=weight*chance;if(trackKill)for(let r=0;r<killEvery;r++){const carry=((r+phase-misses)%killEvery+killEvery)%killEvery;rewards[r]+=weight*chance*killStacksBefore(carry,misses,killEvery)}
+      // Buff于160tick就绪，直到本次攻击消耗才开始下一周期，不积攒第二个Buff。
+      if(forced){ends.add((phase+1)%killEvery);continue;}
+      add(time,hot?96:0,0,trackKill?(phase+1)%killEvery:0,weight*chance);
+      add(time,Math.max(0,remaining-gap),(collapse||trackKill)?Math.min(5*killEvery,misses+1):0,trackKill?(phase+1)%killEvery:0,weight*(1-chance));
+    }
+    states=next;
+  }
+  // 每次必暴都清层但保留射击余数；周期射击数决定可达的余数类。
+  const gcd=(a,b)=>b?gcd(b,a%b):a;let stride=killEvery;for(const phase of ends)stride=gcd(stride,phase);
+  let reward=0;for(let r=0;r<killEvery;r+=stride)reward+=rewards[r]*stride/killEvery;
+  return{fps:32*shots/totalTicks,chance:crits/shots,uptime:hotTicks/totalTicks,killCritStacks:crits?reward/crits:0};
+}
+function firingCycle(offTicks,onTicks,p,hot,collapse,set2,trackKill=false,killEvery=16){
+  if(set2)return guaranteedCycle(offTicks,onTicks,p,hot,collapse,trackKill,killEvery);
+  if(p<=0&&!collapse)return{fps:32/offTicks,chance:0,uptime:0,killCritStacks:0};
+  let survival=1,elapsed=0,shots=0,seconds=0,hotSeconds=0,killCrits=0,crits=0;
+  for(let misses=0;misses<1000&&survival>1e-12;misses++){
+    const remaining=hot?Math.max(0,3-elapsed):0,onGap=onTicks/32,offGap=offTicks/32;
+    const gap=remaining>=onGap?onGap:remaining>0?remaining+ceil((1-remaining/onGap)*offTicks)/32:offGap;
+    shots+=survival;seconds+=survival*gap;hotSeconds+=survival*Math.min(gap,remaining);
+    const chance=Math.min(1,p+(collapse?misses*.08:0));
+    crits+=survival*chance;if(trackKill)for(let carry=0;carry<killEvery;carry++)killCrits+=survival*chance*killStacksBefore(carry,misses,killEvery)/killEvery;
+    survival*=1-chance;elapsed+=gap;
+  }
+  return{fps:shots/seconds,chance:1/shots,uptime:hotSeconds/seconds,killCritStacks:crits?killCrits/crits:0};
+}
+function relicGain(s){const w=weapon();return s.warrior*.03+(w.flags.powder?s.powder*.05*(w.explosionShare||0)/100:0)+s.trigger*(w.triggerGain||0)/100+(useOverload()&&s.overload>0?.025:0)}
+function combat(s){const w=weapon(),r=rules(),f=w.flags;
+  const key=JSON.stringify([relicGain(s),w.interval,w.critChance,w.critMultiplier,f.speed,f.function,f.crit,r.entropy2Speed,s.function,s.speedChip,s.penetration,s.recycle,s.kill,s.collapse]);
+  if(combatCache.has(key))return combatCache.get(key);
+  const chip=f.speed?s.speedChip:0,hot=f.speed&&f.function&&s.function>0;
+  const setCount=[s.function,s.penetration,s.recycle,s.kill].filter(n=>n>0).length,set4=setCount===4;
+  const p=f.crit?(w.critChance||0)/100:0,initialCrit=f.crit?(w.critMultiplier??1):1;
+  const collapsed=f.crit&&s.collapse;
+  const base=32/ticks(w,0)*(1+p*(initialCrit-1));let best;
+  for(const e of [0,1,2]){
+    const off=ticks(w,chip,f.speed?e:0),on=ticks(w,chip+(hot?s.function*10:0),f.speed?e:0);
+    const firing=firingCycle(off,on,p,hot,collapsed,f.crit&&setCount>=2,s.kill>0&&!set4&&!collapsed,s.kill?20-4*s.kill:16);
+    const killCritStacks=s.kill?(set4?5:firing.killCritStacks):0;
+    const cm=!f.crit||collapsed?1:(initialCrit+.1*killCritStacks)*(1+.1*s.recycle);
+    const relic=1+relicGain(s),factor=(relic+(e===1?-.02:e===2?.01:0))/relic,dps=firing.fps*(1+firing.chance*(cm-1))*factor/base;
+    if(!best||dps>best.dps)best={dps,ticks:on,offTicks:off,entropy:e,set4,killCritStacks,expectedRate:firing.fps,hotUptime:firing.uptime,effectiveCrit:firing.chance,critMultiplier:cm};
+  }
+  if(combatCache.size>=12000)combatCache.clear();combatCache.set(key,best);return best;
+}
+function metrics(s,votActive=false){const w=weapon(),r=rules(),f=w.flags;
+  const overloadActive=useOverload()&&s.overload>0;
+  const damage=1+(!useOverload()?Math.min(r.chipDamageCap,s.damageChip)/100:0);
+  const buffs=[(1+s.reaper)*.025,s.vot&&votActive?.05:0,s.poison?-.017:0];
+  // Buff独立于芯片及文物，区内合计增伤最高10%。
+  const buffGain=Math.min(.10,buffs.reduce((a,b)=>a+b,0)),buffMultiplier=1+buffGain;
+  const total=(1+relicGain(s))*buffMultiplier;
+  const penetration=1+(f.penetration?s.penetration*.1*(w.penetrationShare||0)/100:0);
+  const firing=combat(s);
+  return{...firing,buffGain,buffMultiplier,dps:firing.dps*damage*total*penetration,progress:1+.1*s.quick+.15*s.command};
+}
+function baseDps(){const w=weapon();if(!(w.damage>0&&w.interval>0))return null;if(w.flags.crit&&(w.critChance===null||w.critMultiplier===null))return null;const crit=w.flags.crit?1+w.critChance/100*(w.critMultiplier-1):1;return w.damage*(32/ticks(w,0))*crit}
+function damageMissing(){const w=weapon(),missing=[];if(!(w.damage>0))missing.push('单次射击伤害');if(!(w.interval>0))missing.push('射击间隔');if(w.flags.crit&&(w.critChance===null||w.critMultiplier===null))missing.push('暴击基础数据');return missing.length?'缺少'+missing.join('、'):''}
+function timingMissing(){return damageMissing()||(!(weapon().progressFactor>0)?'已能计算伤害触发；仅缺枪械固定进度倍率，暂不能比较购买耗时':'')}
+function genePreview(){
+  if(damageMissing())return damageMissing()+'，暂不能计算毒进度速度。';
+  const dps=baseDps()*metrics({...state(),poison:1}).dps;
+  return `以下为花4000进度购入基因后的触发预览，计时从购入后开始，不含攒够购买进度的时间；按开局配置、计入−1.7%减伤估算：实际DPS ${fmt(dps)}；默认3%转化为${fmt(dps*.03)}毒进度/秒，首次约${fmt(500/(dps*.03))}秒触发；另花4000进度升级至4.5%后为${fmt(dps*.045)}毒进度/秒，首次约${fmt(500/(dps*.045))}秒触发。触发后10秒不积累。`;
+}
+function votPreview(){
+  if(damageMissing())return damageMissing()+'，暂不能计算沃陶姆伤害积累。';
+  const owned={...state(),vot:1},dps=baseDps()*metrics(owned).dps,activeDps=baseDps()*metrics(owned,true).dps,charge=30000/dps;
+  return `按开局配置持有沃陶姆、其余配置不变估算：未增幅DPS ${fmt(dps)}，首次约${fmt(charge)}秒积满30000伤害；增幅期间DPS ${fmt(activeDps)}，持续10秒且不积累下一次进度。连续输出周期约${fmt(charge+10)}秒，覆盖率约${fmt(100*10/(charge+10))}%。伤害积累不需要普通进度倍率。`;
+}
+function baseRate(){return baseDps()>0&&weapon().progressFactor>0?baseDps()*weapon().progressFactor:null}
+function progressMultiplier(m,active){return m.progress*(active?1.05:1)}
+function rate(s,active=false){const m=metrics(s);return(baseRate()||1)*m.dps*progressMultiplier(m,active)}
+function roundSchedule(){const r=rules(),count=Number(r.roundRewards??5);if(count===0)return[];if(!(baseRate()>0&&r.nextRound>0&&(count===1||r.roundLength>0)))return null;return Array.from({length:count},(_,i)=>r.nextRound+i*(r.roundLength||0))}
+function simulate(order,record=false,previous=null){let {state:s,time,bank,event,rewards,poison,buffUntil,geneTriggers,geneBuffSeconds,geneOwnedAt,votDamage,votUntil,votTriggers,votBuffSeconds,votOwnedAt}=previous||{state:state(),time:0,bank:0,event:0,rewards:0,poison:0,buffUntil:0,geneTriggers:0,geneBuffSeconds:0,geneOwnedAt:null,votDamage:0,votUntil:0,votTriggers:0,votBuffSeconds:0,votOwnedAt:null};const rows=[],schedule=roundSchedule()||[],initialDps=baseDps(),initialRate=baseRate()||1;
+  for(const a of order){const started=time,off=metrics(s),on=s.vot?metrics(s,true):off;let due=a.cost-bank;bank=0;
+    // 两个触发器分别保留伤害进度与增幅时间，并共同使用当前实际DPS。
+    while(due>1e-8){const active=time<buffUntil,votActive=time<votUntil,m=votActive?on:off,dps=(initialDps||0)*m.dps;
+      const poisonRate=s.poison&&!active?dps*(.03+.015*s.poisonUpgrade):0,votRate=s.vot&&!votActive?dps:0;
+      const speed=initialRate*m.dps*progressMultiplier(m,active),payAt=time+due/speed;
+      const geneAt=active?buffUntil:poisonRate>0?time+(500-poison)/poisonRate:Infinity;
+      const votAt=votActive?votUntil:votRate>0?time+(30000-votDamage)/votRate:Infinity;
+      const roundAt=schedule[event]??Infinity,end=Math.min(payAt,geneAt,votAt,roundAt),dt=end-time;
+      due-=dt*speed;if(active)geneBuffSeconds+=dt;else poison+=dt*poisonRate;
+      if(votActive)votBuffSeconds+=dt;else votDamage+=dt*votRate;time=end;
+      // 结算同刻先判定已持有的指挥，再购买新项目，不补领错过的奖励。
+      if(end===roundAt){event++;if(s.command){due-=3000;rewards++}}
+      if(end===geneAt){if(active){buffUntil=0;poison=0}else{poison=0;buffUntil=time+10;geneTriggers++}}
+      if(end===votAt){if(votActive){votUntil=0;votDamage=0}else{votDamage=0;votUntil=time+10;votTriggers++}}
+      if(end===payAt)due=Math.min(due,0);
+    }
+    bank=Math.max(0,-due);s=apply(s,a);if(a.change.poison)geneOwnedAt=time;if(a.change.vot)votOwnedAt=time;
+    if(record){const after=metrics(s,time<votUntil);rows.push({a,duration:time-started,time,rewards,geneTriggers,geneActive:time<buffUntil,poison,votTriggers,votActive:time<votUntil,votDamage,...after,absoluteDps:initialDps?initialDps*after.dps:null})}
+  }
+  return{time,rows,state:s,event,rewards,bank,poison,geneTriggers,geneBuffSeconds,geneOwnedAt,buffUntil,votDamage,votUntil,votTriggers,votBuffSeconds,votOwnedAt};
+}
+function eligible(items){const omitted=[],unranked=[];let actions=items.filter(a=>{if(!a.enabled||a.phase>=7||a.id==='reaperBase'||a.id==='entropy1'||a.id==='entropy1Remove'||a.id==='entropy2')return false;if(baseDps()>0&&!(baseRate()>0)&&['poison','poisonUpgrade','vot'].includes(a.id)&&a.cost!==null){unranked.push({...a,reason:'触发收益可计算；缺普通进度倍率，购买时点尚不参与比较'});return false}if(a.reason||a.cost===null){omitted.push(a);return false}return true});let changed=true;while(changed){changed=false;const ids=new Set(actions.map(a=>a.id));actions=actions.filter(a=>{if(a.deps.some(id=>!ids.has(id))){omitted.push({...a,reason:'前置项目尚未计入'});changed=true;return false}return true})}return{actions,omitted,unranked}}
+// 保留最终战斗构筑，联合调整购买顺序与发育投资取舍。
+function optionalInvestments(actions){
+  const target=actions.reduce(apply,state()),set4=[target.function,target.penetration,target.recycle,target.kill].every(n=>n>0),optional=new Map();
+  for(const a of actions){
+    if(['quick','command','poison','poisonUpgrade'].includes(a.id))optional.set(a.id,'发育投资：仅在缩短当前构筑成型时间时购买');
+    if(a.id==='command')optional.set(a.id,roundSchedule()===null?'回合奖励尚未计入：缺少普通进度速度或回合时间，目前只按+15%进度比较；此跳过结果不能作为整局不购买的结论':'仅在当前构筑成型前比较购买成本、+15%进度和持有后实际到账的回合奖励；成型后的奖励未计入，不代表整局不值得买');
+    if((set4||target.collapse)&&a.change.kill>1)optional.set(a.id,'杀伤升级只加快叠层，不提高当前最终构筑的稳态伤害');
+    if(target.collapse&&a.change.recycle>1)optional.set(a.id,'概率坍缩会清除爆伤收益，升级只可能在购买坍缩前有用');
+    if(a.id==='trigger'&&weapon().triggerGain<=0)optional.set(a.id,'当前连携扳机净增伤不为正');
+    if(a.id==='powder'&&weapon().explosionShare===0)optional.set(a.id,'当前配置中没有可受益的爆炸伤害');
+  }
+  return optional;
+}
+function optimize(actions){
+  const optional=optionalInvestments(actions);
+  const valid=order=>{const seen=new Set();for(const a of order){if(a.deps.some(d=>!seen.has(d)))return false;seen.add(a.id)}return true};
+  let best=actions.slice(),bestTime=simulate(best).time,passes=0;
+  while(passes<12){passes++;let next=best;
+    const consider=candidate=>{if(!valid(candidate))return;const t=simulate(candidate).time;if(t<bestTime-1e-8){bestTime=t;next=candidate}};
+    for(const a of best)if(optional.has(a.id)){
+      const removed=new Set([a.id]);let changed=true;
+      while(changed){changed=false;for(const x of best)if(!removed.has(x.id)&&x.deps.some(d=>removed.has(d))){removed.add(x.id);changed=true}}
+      if([...removed].every(id=>optional.has(id)))consider(best.filter(x=>!removed.has(x.id)));
+    }
+    for(let i=0;i<best.length;i++)for(let j=0;j<best.length;j++){if(i===j)continue;const candidate=best.slice(),[a]=candidate.splice(i,1);candidate.splice(j,0,a);consider(candidate)}
+    const present=new Set(best.map(a=>a.id));
+    for(const a of actions)if(optional.has(a.id)&&!present.has(a.id)){
+      const needed=new Set([a.id]);let changed=true;
+      while(changed){changed=false;for(const x of actions)if(needed.has(x.id))for(const dep of x.deps)if(!present.has(dep)&&!needed.has(dep)){needed.add(dep);changed=true}}
+      const bundle=actions.filter(x=>needed.has(x.id));
+      for(let j=0;j<=best.length;j++){const candidate=best.slice();candidate.splice(j,0,...bundle);consider(candidate)}
+    }
+    if(next===best)break;best=next;
+  }
+  const kept=new Set(best.map(a=>a.id));
+  return{...simulate(best,true),passes,skipped:actions.filter(a=>!kept.has(a.id)).map(a=>({...a,reason:optional.get(a.id)}))};
+}
+
+const SEARCH_KEY='growth-planner-search-v1',SEARCH_MODEL='2026-10-08-worker-1';
+let exactJob=null;
+let dataFileHandle=null,fileSaveTimer=null,fileWrite=Promise.resolve();
+function searchSignature(){const {id,name,done,...w}=weapon();return JSON.stringify([SEARCH_MODEL,w,rules()])}
+function readSearchRecord(key){try{return JSON.parse(localStorage.getItem(key))}catch(e){return null}}
+function searchPrefix(signature){return SEARCH_KEY+':'+signature+':'}
+function savedSearch(){
+  const signature=searchSignature(),prefix=searchPrefix(signature),candidates=[];
+  try{
+    const legacy=readSearchRecord(SEARCH_KEY);if(legacy&&legacy[signature])candidates.push(legacy[signature]);
+    for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key.startsWith(prefix))candidates.push(readSearchRecord(key))}
+  }catch(e){return null}
+  const actions=eligible(buildItems()).actions,optional=optionalInvestments(actions),required=actions.filter(a=>!optional.has(a.id)),byId=new Map(actions.map(a=>[a.id,a]));
+  let best=null;
+  for(const record of candidates){
+    if(!record||!Array.isArray(record.order)||typeof record.exact!=='boolean'||!Number.isFinite(Date.parse(record.savedAt)))continue;
+    const seen=new Set();let valid=true;
+    for(const id of record.order){const a=byId.get(id);if(!a||seen.has(id)||a.deps.some(d=>!seen.has(d))){valid=false;break}seen.add(id)}
+    if(!valid||required.some(a=>!seen.has(a.id)))continue;
+    const time=simulate(record.order.map(id=>byId.get(id))).time;
+    if(!Number.isFinite(time))continue;
+    if(!best||time<best.time||(time===best.time&&record.exact&&!best.exact))best={...record,time};
+  }
+  return best;
+}
+function restoreSearch(items,record){const actions=eligible(items).actions,optional=optionalInvestments(actions),kept=new Set(record.order);return {...simulate(record.order.map(id=>actions.find(a=>a.id===id)),true),exact:record.exact,skipped:actions.filter(a=>!kept.has(a.id)).map(a=>({...a,reason:optional.get(a.id)}))}}
+function persistSearch(job){
+  const record={order:job.best.rows.map(x=>x.a.id),exact:!!job.best.exact,nodes:job.nodes,threads:job.workers.length,savedAt:new Date().toISOString()};
+  try{localStorage.setItem(job.storageKey,JSON.stringify(record));job.saved=true}catch(e){job.saved=false}
+  queueFileSave();
+}
+function cancelExact(){
+  if(exactJob){persistSearch(exactJob);exactJob.workers.forEach(w=>w.terminate());URL.revokeObjectURL(exactJob.url)}
+  exactJob=null;$('exact-start').disabled=false;$('exact-stop').hidden=true;
+}
+
+// An optimistic upper bound: all helpful upgrades are already active, every
+// shot can use the largest critical multiplier, and damage Buffs reach the cap.
+// This intentionally overestimates progress speed; it only prunes impossible wins.
+function optimisticProgressRate(actions){
+  const w=weapon(),f=w.flags,r=rules(),s=state();
+  for(const a of actions)for(const [k,v]of Object.entries(a.change))s[k]=(k==='speedChip'||k==='damageChip')?s[k]+Math.max(0,v):Math.max(s[k],v);
+  const speed=f.speed?s.speedChip+(f.function?s.function*10:0):0;
+  const fps=Math.max(...[0,1,2].map(e=>32/ticks(w,speed,f.speed?e:0)));
+  const critical=f.crit?Math.max(1,((w.critMultiplier??1)+(s.kill?.5:0))*(1+.1*s.recycle)):1;
+  const relic=1+s.warrior*.03+(useOverload()?s.overload*.025:0)+(f.powder?s.powder*.05*Math.max(0,w.explosionShare||0)/100:0)+s.trigger*Math.max(0,w.triggerGain||0)/100+.01;
+  const chip=1+(useOverload()?0:Math.max(0,Math.min(r.chipDamageCap,s.damageChip))/100);
+  const penetration=1+(f.penetration?s.penetration*.1*Math.max(0,w.penetrationShare||0)/100:0);
+  return w.damage*fps*critical*relic*chip*penetration*1.10*w.progressFactor*(1+.1*s.quick+.15*s.command)*(s.poison?1.05:1);
+}
+function* exhaustiveOrders(actions,seed,job,firstId=null){
+  const optional=optionalInvestments(actions),required=new Set(actions.filter(a=>!optional.has(a.id)).map(a=>a.id));
+  for(const id of required)for(const dep of actions.find(a=>a.id===id).deps)required.add(dep);
+  const ordered=[...seed.rows.map(x=>x.a),...seed.skipped],path=[],have=new Set(),peak=optimisticProgressRate(actions),rounds=roundSchedule()||[],canCommand=actions.some(a=>a.id==='command');
+  const requiredCost=actions.filter(a=>required.has(a.id)).reduce((sum,a)=>sum+a.cost,0);
+  job.best=seed;job.nodes=0;
+  function* visit(result,remainingCost){
+    job.nodes++;yield;
+    if([...required].every(id=>have.has(id))){
+      if(result.time<job.best.time){const kept=new Set(path.map(a=>a.id));job.best={...simulate(path,true),skipped:actions.filter(a=>!kept.has(a.id)).map(a=>({...a,reason:optional.get(a.id)}))}}
+      return;
+    }
+    // Any extension has a nonnegative duration. No merging by owned-items set:
+    // equal inventories may have different bank balances and trigger phases.
+    if(result.time>=job.best.time)return;
+    const unpaid=Math.max(0,remainingCost-result.bank-(canCommand?Math.max(0,rounds.length-result.event)*3000:0));
+    if(peak>0&&Number.isFinite(peak)&&result.time+unpaid/peak>job.best.time+1e-8)return;
+    const identicalChips=new Set();
+    for(const a of ordered){
+      if(have.has(a.id)||a.deps.some(id=>!have.has(id)))continue;
+      if(a.route==='chip'&&!a.deps.length){const key=JSON.stringify([a.cost,a.change]);if(identicalChips.has(key))continue;identicalChips.add(key)}
+      path.push(a);have.add(a.id);yield* visit(simulate([a],false,result),remainingCost-(required.has(a.id)?a.cost:0));have.delete(a.id);path.pop();
+    }
+  }
+  if(firstId!==null){const a=actions.find(x=>x.id===firstId);path.push(a);have.add(a.id)}
+  yield* visit(simulate(path),requiredCost-path.reduce((sum,a)=>sum+(required.has(a.id)?a.cost:0),0));
+}
+function applyExactResult(items,best){renderEvaluation(items,best);renderFlow(items,best);$('calc-entropy').value=metrics(best.state,best.time<best.votUntil).entropy;renderCalc()}
+// The workers use the same simulation functions as the page, embedded in a Blob
+// so that this remains a single offline HTML file.
+function searchWorkerMain(){
+  let config,active=null,totalNodes=0;
+  self.onmessage=({data:m})=>{
+    if(m.type==='bound'){if(active&&m.best.time<active.best.time)active.best=m.best;return}
+    config=m.config;workerWeapon=config.weapon;workerRules=config.rules;
+    const job={};active=job;const gen=exhaustiveOrders(m.actions,m.seed,job,m.firstId);let published=m.seed;
+    function tick(){
+      const until=performance.now()+80;let done=false;
+      do{done=gen.next().done}while(!done&&performance.now()<until);
+      const better=job.best.time<published.time;
+      self.postMessage({done,nodes:totalNodes+job.nodes,best:better?job.best:null});published=job.best;
+      if(done){totalNodes+=job.nodes;active=null}else setTimeout(tick,0);
+    }
+    tick();
+  };
+}
+function workerSource(){
+  const functions=[useOverload,ticks,state,apply,killStacksBefore,guaranteedCycle,firingCycle,relicGain,combat,metrics,baseDps,baseRate,progressMultiplier,roundSchedule,simulate,optionalInvestments,optimisticProgressRate,exhaustiveOrders];
+  return 'let workerWeapon,workerRules;const weapon=()=>workerWeapon,rules=()=>workerRules,combatCache=new Map();const ceil='+ceil.toString()+';\n'+functions.map(f=>f.toString()).join('\n')+'\n('+searchWorkerMain.toString()+')();';
+}
+function searchStatus(job,finished=false){
+  return (finished?'已穷举完成，当前候选及购买策略内最优':'多线程搜索中，尚未证明最优')+' · '+job.workers.length+' 个线程 · 已完成 '+job.completed+'/'+job.total+' 个首购分支 · 已搜索 '+job.nodes.toLocaleString()+' 个顺序前缀 · '+Math.round(job.nodes/Math.max(.001,(performance.now()-job.started)/1000)).toLocaleString()+' 节点/秒 · 最快 '+duration(job.best.time)+(job.saved?' · 最快结果已保存本地。':' · 本地保存失败，请勿关闭页面。');
+}
+function startExact(){
+  cancelExact();const items=buildItems(),{actions}=eligible(items);
+  if(!(baseRate()>0)||roundSchedule()===null){$('exact-status').textContent='请先补齐枪械伤害、普通进度倍率及回合时间；若无剩余结算，将剩余次数设为0。';return}
+  if(actions.some(a=>!Number.isFinite(a.cost)||a.cost<0)){$('exact-status').textContent='购买成本需为非负数才能进行最短耗时搜索。';return}
+  const record=savedSearch();let seed=record?restoreSearch(items,record):optimize(actions);
+  if(seed.exact){applyExactResult(items,seed);$('exact-status').textContent='已恢复本地最优结果：当前候选及购买策略内最优 · '+duration(seed.time)+'。';return}
+  seed={...seed,exact:false};
+  const optional=optionalInvestments(actions),roots=actions.every(a=>optional.has(a.id))?[null]:actions.filter(a=>!a.deps.length).map(a=>a.id);
+  const requested=$('exact-threads').value==='auto'?Math.min(8,Math.max(1,(navigator.hardwareConcurrency||2)-1)):Number($('exact-threads').value);
+  const count=Math.min(requested,roots.length),job={items,best:seed,nodes:0,workers:[],counts:Array(count).fill(0),completed:0,total:roots.length,signature:searchSignature(),lastSave:0,started:performance.now()};
+  job.storageKey=searchPrefix(job.signature)+crypto.randomUUID();
+  job.url=URL.createObjectURL(new Blob([workerSource()],{type:'text/javascript'}));exactJob=job;
+  const config={weapon:structuredClone(weapon()),rules:structuredClone(rules())};
+  $('exact-start').disabled=true;$('exact-stop').hidden=false;applyExactResult(items,seed);
+  function dispatch(worker){worker.postMessage({type:'search',config,actions,seed:job.best,firstId:roots.shift()})}
+  const failed=message=>{if(exactJob!==job)return;cancelExact();applyExactResult(items,job.best);$('exact-status').textContent='搜索线程未能继续：'+message+'。'+(job.saved?'已保存当前最快路线，未证明最优。':'当前路线未能保存。')};
+  for(let i=0;i<count;i++){
+    let worker;try{worker=new Worker(job.url)}catch(e){failed(e.message);return}job.workers.push(worker);
+    worker.onerror=e=>{e.preventDefault();failed(e.message)};
+    worker.onmessage=({data:m})=>{
+      if(exactJob!==job)return;
+      job.counts[i]=m.nodes;job.nodes=job.counts.reduce((a,b)=>a+b,0);
+      const improved=m.best&&m.best.time<job.best.time;
+      if(improved){job.best=m.best;job.workers.forEach(w=>w.postMessage({type:'bound',best:job.best}));applyExactResult(items,job.best)}
+      if(m.done){job.completed++;if(roots.length)dispatch(worker)}
+      const finished=job.completed===job.total;
+      if(finished){job.best={...job.best,exact:true};applyExactResult(items,job.best)}
+      if(improved||m.done||Date.now()-job.lastSave>1000){persistSearch(job);job.lastSave=Date.now()}
+      $('exact-status').textContent=searchStatus(job,finished);
+      if(finished)cancelExact();
+    };
+    dispatch(worker);
+  }
+  persistSearch(job);$('exact-status').textContent=searchStatus(job);
+}
+
+function duration(t){return baseRate()>0? t>=60?fmt(t/60)+' 分钟':fmt(t)+' 秒':fmt(t)+' 相对单位'}
+function entropySteps(from,to){if(from===to)return '保持';return [from?'分解熵增 '+from:'',to?'购买熵增 '+to:'保持无熵增'].filter(Boolean).join('<br>')}
+function renderEvaluation(items,chosen){const {actions,omitted,unranked}=eligible(items),base=simulate(actions),best=chosen||optimize(actions),saving=base.time>0?(1-best.time/base.time)*100:0,w=weapon(),r=rules();
+  const startEntropy=metrics(state()).entropy,final=metrics(best.state,best.time<best.votUntil);
+  const geneNote=baseRate()>0?`本次推荐路线触发 ${best.geneTriggers} 次，实际生效累计 ${fmt(best.geneBuffSeconds)} 秒。${best.geneOwnedAt!==null&&best.geneTriggers===0?'基因在本次成型前未触发，请结合当前模型边界判断。':''}`:timingMissing()+'。';
+  const votNote=baseRate()>0?`本次推荐路线触发 ${best.votTriggers} 次，实际增幅累计 ${fmt(best.votBuffSeconds)} 秒。${best.votOwnedAt!==null&&best.votTriggers===0?'成型前尚未触发；此项按所选最终战斗构筑保留，不把它说成前期加速收益。':''}`:timingMissing()+'。';
+  const roundNote=roundSchedule()===null?'尚未填齐伤害、固定进度倍率或回合时间，3000/次的结算奖励未计入耗时；当前仅计算指挥的 +15% 进度加成。':('完成所选项目前，对照顺序领取 '+base.rewards+' 次，推荐顺序领取 '+best.rewards+' 次（'+best.rewards*3000+' 进度）。');
+  const firstNames=best.rows.slice(0,5).map(x=>esc(x.a.name)).join(' → ');
+  $('evaluation').innerHTML=`<p><strong>当前推荐开局：</strong>${firstNames||'先配置有效项目'}。熵增从${startEntropy?'熵增 '+startEntropy:'无熵增'}开始，后续分别判断分解与购买时点，可在中间保持无熵增。</p><p><strong>先比较提档收益，再决定先买文物还是函数。</strong>快手与收割者文物同为 4000 进度，前者 +10% 进度，后者将收割者从+2.5%叠到+5%（单独比较相对增幅约2.44%）来加速；两者都买时先快手更快。但如果 3000 的热枪函数触发后提档且覆盖率足够，它可能更早。</p><p><strong>基因震爆器需权衡−1.7%伤害与间歇的+5%进度。</strong>先花4000进度购买，购入后才按3%实际伤害从0积累500毒进度；另花4000进度可一次性升至4.5%（购买加升级共8000进度），触发后10秒内停止积累。毒进度不吃进度加成。DPS越高，冷却结束后重新触发越快；固定进度倍率只改变正常进度速度，不直接改变伤害积累。${genePreview()} ${geneNote}${best.skipped.some(a=>a.id==='poison')?'本次推荐不购买基因震爆器。':''}</p><p><strong>沃陶姆按伤害积累触发，不再固定为50%覆盖率。</strong>花费4000进度，造成30000伤害后获得10秒的5%全伤Buff，期间暂停自身积累。${votPreview()} ${votNote}</p><p><strong>指挥妖精越早买，越可能多赶上一次结算。</strong>每次 3000，最多 5 次合计 15000；这是后续分批领取的进度，不是买入时立刻返还。第 6 回合结束不再算有效发育收益。若能领到3次，固定奖励共9000，已超过8000购买成本，另有+15%进度收益；但这不保证最早成型。缺少回合时间时奖励未计入；当前比较截止于构筑成型，不能据此判定整局不值得购买。</p><p><strong>四件套和熵增需要一起算。</strong>四件套后杀伤递增固定满 5 层，可能值得提前凑首层；分解熵增1与购买熵增2分开判断；去掉熵增1的减伤后，可先保持无熵增，等购买熵增2有利时再买。当前伤害方案：${useOverload()?'过载':'伤害芯片'}。当前成型配置推荐${final.entropy?'熵增 '+final.entropy:'无熵增'}。</p>`;
+  $('comparison').innerHTML=`<strong>${actions.length} 项已知投入的比较</strong>：全部候选按分类购买（对照）${duration(base.time)} → 推荐顺序 ${duration(best.time)}，约缩短 <strong>${fmt(saving)}%</strong>。<br>同一核心战斗目标下，联合优化顺序与可选发育投入；${best.exact?'已穷举完成：当前候选及购买策略内最优':'尚未证明最优'}；${omitted.length} 项参数未齐，${unranked.length} 项触发已可算、购买时点未排。${baseRate()>0?'基因震爆器与沃陶姆按当前伤害、触发时点和增幅结束逐段计算。':timingMissing()+'。当前路线仅比较相对耗时；伤害触发预览单独计算，暂不将基因、沃陶姆加入购买耗时排序。'}`;
+  $('comparison').innerHTML+=`<br>推荐购买${best.rows.length}项，共${best.rows.reduce((sum,x)=>sum+x.a.cost,0)}进度；跳过${best.skipped.length}项，少投入${best.skipped.reduce((sum,a)=>sum+a.cost,0)}进度。`;
+  $('schedule').innerHTML=actions.length?`<p>初始免费状态：${startEntropy?'熵增 '+startEntropy:'无熵增'}。表中熵增列为每次购买后的推荐状态，操作列分别列出分解与购买。两者可以发生在不同升级节点；同一节点出现时也属于两次独立操作，均不消耗进度。</p><div class="table-scroll"><table class="order-table"><thead><tr><th>顺序</th><th>投入项目</th><th>进度</th><th>${baseRate()>0?'累计时间':'累计相对耗时'}</th><th>DPS / 秒伤倍率</th><th>熵增</th><th>本节点熵增操作</th><th>四件套</th><th>热枪覆盖率</th><th>已领回合进度</th><th>基因触发次数</th><th>沃陶姆触发次数</th></tr></thead><tbody>${best.rows.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.a.name)}</td><td>${x.a.cost}</td><td>${duration(x.time)}</td><td>${x.absoluteDps===null?fmt(x.dps,3)+'×':fmt(x.absoluteDps)+' / '+fmt(x.dps,3)+'×'}</td><td>${x.entropy||'无'}</td><td>${entropySteps(i?best.rows[i-1].entropy:startEntropy,x.entropy)}</td><td>${x.set4?'已齐':'未齐'}</td><td>${fmt(x.hotUptime*100)}%</td><td>${x.rewards*3000}</td><td>${x.geneTriggers}${x.geneActive?'（生效中）':''}</td><td>${x.votTriggers}${x.votActive?'（增幅中）':''}</td></tr>`).join('')}</tbody></table></div>`:'<p>填写成本及适用条件后生成顺序。</p>';
+  $('model-notes').innerHTML=`<p>从零购买，以更快完成所选最终战斗构筑为目标。快手、指挥、基因及转化升级作为可选发育投资；不影响最终构筑稳态输出的函数升级也可跳过。它们仍可能因过渡期收益而保留。不评估成型后直到整局结束的总收益。基础DPS = 未计收割者的单次未暴击伤害 × 32/tick档位 × 暴击期望倍率。Buff乘区=1+min(10%,收割者增伤+沃陶姆增伤−基因减伤)，与芯片及文物乘区相乘。收割者默认一层+2.5%已计入当前秒伤倍率；额外购买一层后同一Buff合计+5%，不按两个1.025相乘。当前进度速度 = 基础DPS × 当前秒伤倍率 × 枪械固定进度倍率 × 当前进度加成倍率。基因生效时普通进度倍率独立乘1.05，不再给一次性路线进度。相对时间单位为“基础进度速度取 1 时的耗时”，不等于实际秒数。两条比较路线在每次升级后分别比较熵增1、无熵增、熵增2的DPS；分解熵增1与购买熵增2独立择时，可以跨越多个升级保持无熵增。熵增操作本身不消耗进度，推荐表单独列出操作提示。</p><p>初始暴击倍率 ${w.critMultiplier}×（已确认默认 1.35）；回收聚积覆盖率已确认固定100%；杀伤递增1至4级分别每16/12/8/4次射击叠1层、最多5层，四件套前按暴击发生时的期望层数计入爆伤，不再手填2.5层。暴击消耗已有层数但保留未满当前阈值的计数。计算跟踪射击余数与暴击间隔；达到射击阈值的当次攻击先结算伤害，再获得新层；即使本发暴击，新获得的层数也保留供后续攻击使用。四件套后沿用已确认满5层常驻。暴击倍率已确认=(初始倍率+0.10×杀伤叠层数)×(1+0.10×回收等级)；杀伤升级只缩短叠层射击次数，四件套满层后升级不增加稳态DPS。杀伤升级仅在四件套前可能受益，规划会比较保留或跳过；文物区内相加已确认（含熵增全伤增减），Buff、芯片与文物之间独立相乘已确认。热枪覆盖率按3秒刷新与持续射击的稳态估算：分别计算触发/未触发档，按暴击间隔的期望时间折算平均射速，不对加成先取平均再取tick档。两件套按160tick计时，必暴Buff保留至攻击消耗，消耗后重新计时，持有期间不累计；自然暴击不重置计时。计算连续射击下从一次必暴消耗到下次消耗的期望周期，联合跟踪热枪剩余96tick和概率坍缩层数。热枪结束时跨档射击间隔沿用按完成比例衔接并向上取tick的假设；首次取得套装的启动期和跨购买计时相位未逐次模拟；多弹丸每次开火只计一次射击，必暴覆盖整次攻击；自然暴击是否逐弹丸独立尚未明确，换弹停火未逐次模拟；基因毒进度按期望DPS连续积累，不按每颗子弹离散触发。</p><p>概率坍缩每次未暴击射击后加8个百分点暴击率，暴击后清层。成本4000，暴击总倍率固定归1，原始1.35倍与额外爆伤均失效。暴击事件本身仍触发热枪。默认不购买，选择购买后直接参加排序。对比仅是同一构筑的稳态收益，未计4000成本，也不证明应购买；购买坍缩后爆伤无效，回收升级和杀伤升级会比较过渡收益决定是否保留；凑套装的首级组件仍按选定构筑保留。</p><p>基因震爆器：购买后从0毒进度开始，当前实际DPS×转化率计入毒进度，初始3%，一次性花4000进度提升1.5个百分点至4.5%，已有积累不重置；积满500触发+5%进度10秒，CD内不积累，结束后从0继续。购买其他项目不会重置毒进度或CD。−1.7%持有惩罚对所有武器生效，计入独立Buff区，与Buff增伤合计后最高+10%；不存在逐枪全伤减伤免疫。基因普通进度Buff已确认独立乘区×1.05。该5%不反过来加速毒进度，毒进度只由实际伤害与转化率决定，不受快手、指挥或普通进度Buff影响。</p><p>沃陶姆购买后从0积累，造成30000实际伤害时触发5%全伤Buff、持续10秒，增幅期间自身不积累，结束后从0重新积累。增幅与否按当前事件状态计算DPS，影响正常进度和非CD期的基因毒进度；购买其他项目保留两个文物各自的积累与持续时间。都按连续期望DPS积分，不模拟逐颗子弹的超额伤害。</p><p>指挥结算按填写的首次时间和后续间隔逐次发生，仅购买后的有效结算可领取，最多5次；奖励固定3000，不再叠乘进度加成。暂按奖励能支付当前规划项目、余量可结转后续项目建模。仅计完成当前规划前实际到账的奖励；不把尚未到来的奖励从购买成本中直接扣除。</p><p>火药扩容按爆炸伤害+5%及该枪爆炸占比估算整体DPS，+10%爆炸范围单独展示；额外命中与爆炸衰减的变化未量化。</p><p>所有项目拆除均无进度返还。${useOverload()?'当前使用过载：4000进度购买，全伤+2.5%计入文物区；棋盘仅规划射速芯片。':'当前使用伤害芯片：按棋盘配置购买，伤害乘区上限30%。'}整条路线固定使用所选伤害方案。Buff与芯片、文物分属独立乘区，Buff增伤上限10%；文物区内相加，包含熵增的全伤增减。</p><p>芯片推荐优先保留伤害目标，再找热枪触发期间可摆放的较快射速档；未联合优化覆盖率与芯片目标。主页路线直接采用推荐顺序，只折叠相邻同类项目，不按原阶段重新分组。跨类别自由排序，仅保留必要前置；子弹与元素AOE固定末尾。默认快速规划最多12轮比较移位、删除与重新插入。可手动穷举所有合法购买顺序及可选投入；只在搜索完成时确认当前候选及购买策略内最优。搜索保留前置和触发历史，不把相同已购物品但Buff状态不同的路线合并。不联合搜索所有枪械、芯片布局、主动等待或整局战斗收益。</p><p>${omitted.length?'未计入：'+omitted.map(a=>esc(a.name)+'（'+esc(a.reason||'成本未知')+'）').join('；'):unranked.length?'伤害触发数据已齐；基因、转化升级和沃陶姆的购买时点尚未排序。':'适用前期项目均有可计算参数。'}</p>`;
+  $('comparison').innerHTML+='<br>'+roundNote+'<br>全伤害增加与减少对所有武器适用；Buff、芯片、文物分属独立乘区，Buff增伤上限10%；文物区内相加，基因普通进度Buff独立乘1.05均已确认。';
+  const opening=metrics(state()),openingDps=baseDps()>0?baseDps()*opening.dps:null;
+  $('damage-summary').textContent=`未计收割者的基础DPS：${baseDps()>0?fmt(baseDps()):'待填伤害'} · 开局DPS：${openingDps?fmt(openingDps):'待填伤害'} · 开局进度速度：${baseRate()>0?fmt(baseRate()*opening.dps)+' 进度/秒':'待填齐数据'}。开局已计收割者默认一层+2.5%、推荐熵增和暴击期望；收割者文物额外一层购入后再计。`;
+  renderHotComparison(best.state);
+  $('base-rate').textContent=fmt(32/ticks(w,0))+' 发/秒';$('final-rate').textContent=fmt(final.expectedRate)+' 发/秒';return{actions,best};
+}
+function renderHotComparison(finalState){const without={...finalState,collapse:0};
+  const baseline=metrics(without),rows=[['不购买概率坍缩',baseline]];
+  rows.push(['购买概率坍缩：暴击倍率1.0',metrics({...finalState,collapse:1})]);
+  $('hot-comparison').innerHTML=`<strong>热枪速射与概率坍缩 · 同构筑比较</strong><p>热枪持续3秒，暴击刷新。触发档 ${baseline.ticks} tick，未触发档 ${baseline.offTicks} tick；平均射速按两种状态分别计算。</p><div class="table-scroll"><table><thead><tr><th>概率坍缩方案</th><th>热枪覆盖率</th><th>平均发/秒</th><th>有效暴击率</th><th>相对不购买的DPS</th></tr></thead><tbody>${rows.map(([label,m])=>`<tr><td>${label}</td><td>${fmt(m.hotUptime*100)}%</td><td>${fmt(m.expectedRate)}</td><td>${fmt(m.effectiveCrit*100)}%</td><td>${fmt((m.dps/baseline.dps-1)*100)}%</td></tr>`).join('')}</tbody></table></div><p>按开火次数计数，必暴覆盖整次攻击；自然暴击暂按每次开火一次判定的稳态近似；两件套按5秒获得Buff、攻击消耗后重计时计算，不在持有期间累积。概率坍缩成本4000，上表未扣成本；提高覆盖率可能被爆伤损失抵消。${weapon().flags.crit?'已确认原始暴击倍率也消失，需比较实际DPS与购买成本。':'当前枪械关闭暴击，无法由这些暴击机制获得收益。'}</p>`;
+}
+function routeGroups(items,best){
+  const groups=[{name:'开局准备',sub:'收割者默认一层+2.5%常驻；采用推荐初始熵增',list:[items.find(a=>a.id==='reaperBase')]}];
+  let entropy=metrics(state()).entropy;
+  if(entropy)groups[0].list.push({id:'entropy-start-'+entropy,name:'购买熵增 '+entropy,cost:0,enabled:true,detail:'初始推荐状态；后续分解与购买分别择时。'});
+  function append(a,phase){const previous=groups[groups.length-1];if(previous.phase===phase)previous.list.push(a);else groups.push({phase,name:phase===3?(useOverload()?'过载':'伤害芯片'):PHASES[phase][0],sub:'按收益排序，可与其他类别交错发育',list:[a]})}
+  best.rows.forEach((row,i)=>{
+    append({...row.a,step:i+1,detail:'第 '+(i+1)+' 笔投入 · 累计 '+duration(row.time)+'。'+row.a.detail},row.a.phase);
+    if(row.entropy!==entropy){
+      const operation={cost:0,enabled:true,detail:'完成上述投入后调整；分解与购买是独立操作。'};
+      if(entropy)append({...operation,id:'entropy-remove-'+row.a.id+'-'+entropy,name:'分解熵增 '+entropy},4);
+      if(row.entropy)append({...operation,id:'entropy-buy-'+row.a.id+'-'+row.entropy,name:'购买熵增 '+row.entropy},4);
+      else groups[groups.length-1].sub='此后保持无熵增，继续下方发育';
+      entropy=row.entropy;
+    }
+  });
+  for(const phase of [7,8]){const list=items.filter(a=>a.phase===phase&&a.enabled);if(list.length)groups.push({name:PHASES[phase][0],sub:'按已确认要求，核心发育后补充',list})}
+  return groups;
+}
+function renderFlow(items,best){const w=weapon(),groups=routeGroups(items,best),route=groups.flatMap(g=>g.list),complete=route.filter(a=>w.done[a.id]).length;
+  $('completion').textContent=complete+' / '+route.length;$('completion-bar').style.width=(route.length?100*complete/route.length:0)+'%';
+  if(best.skipped.length)groups.push({name:'本次跳过的投入',sub:'在当前成型目标下省时；不是参数缺失，也不代表所有对局都不值得买',list:best.skipped,pending:true});
+  const {omitted,unranked}=eligible(items);
+  if(unranked.length)groups.push({name:'伤害触发文物',sub:'触发数据已齐，仍需支付各项购买成本后才生效；购买时点未排序，此处位置不代表建议最后购买',list:unranked.map(a=>({...a,detail:a.detail+(a.id==='poison'?genePreview():a.id==='vot'?votPreview():'' )})),unranked:true});
+  if(omitted.length)groups.push({name:'待补充参数的项目',sub:'未纳入顺序，不代表建议最后购买；补齐参数后重新排序',list:omitted,pending:true});
+  $('flow').innerHTML=groups.map((g,i)=>`<li class="phase"><details ${i<2?'open':''}><summary><span class="step-no">${g.unranked?'—':g.pending?'?':String(i+1).padStart(2,'0')}</span><span class="phase-name">${g.name}<small>${g.sub}</small></span><span class="tag">${g.unranked?'触发可计算':g.pending?(g.name==='本次跳过的投入'?'不购买':'待配置'):g.list.filter(a=>w.done[a.id]).length+'/'+g.list.length}</span></summary><div class="phase-body">${g.list.map(a=>`<div class="phase-item" ${a.step?'data-route-action="'+a.id+'"':''}><input aria-label="完成${esc(a.name)}" type="checkbox" data-done="${a.id}" ${w.done[a.id]?'checked':''} ${g.pending?'disabled':''}><div class="${!g.pending&&w.done[a.id]?'done':''}">${esc(a.name)}<small>${esc(a.detail)}</small>${a.reason?`<small>${esc(a.reason)}</small>`:''}</div><span class="item-value">${a.id==='reaperBase'?'初始常驻准备':a.cost===null?'成本待定':a.cost===0?'免费':fmt(a.cost)+' 进度'}</span></div>`).join('')}</div></details></li>`).join('');
+  for(const cb of $('flow').querySelectorAll('input[data-done]'))cb.onchange=()=>{w.done[cb.dataset.done]=cb.checked;save();const open=Array.from($('flow').querySelectorAll('details')).map(d=>d.open);renderFlow(items,best);$('flow').querySelectorAll('details').forEach((d,i)=>d.open=open[i])};
+}
+function renderCalc(){const initial=Number($('initial').value),b=Number($('calc-bonus').value),e=Number($('calc-entropy').value),w={interval:initial};if(!(initial>0)){$('calc-rows').innerHTML='';$('calc-base').textContent='—';$('calc-now').textContent='—';return}const current=ticks(w,0),now=ticks(w,b,e);$('calc-base').textContent=fmt(32/current)+' 发/秒';$('calc-now').textContent=fmt(32/now)+' 发/秒';$('calc-rows').innerHTML=Array.from({length:current},(_,i)=>current-i).map(n=>`<tr class="${n===now?'best':n<now?'dim':''}"><td>${n} tick</td><td>${fmt(32/n)}</td><td>+${pct(Math.max(0,(initial*32/n-1)*100))}</td><td>+${pct(needed(w,n,e))}</td></tr>`).join('');$('calc-note').textContent=`高亮为 ${now} tick 档。热枪速射未触发时不提供函数加成；这里显示触发档。右列已计入${e?'熵增 '+e:'无熵增'}，表示函数和芯片合计所需加成。`;}
+function renderHome(){cancelExact();$('exact-status').textContent='当前显示快速规划，可点击穷举继续求解；修改配置后需重新搜索。';combatCache.clear();selectors();const w=weapon();$('quick-damage').value=w.damage??'';$('quick-factor').value=w.progressFactor??'';$('initial').value=w.interval;$('calc-bonus').value=(w.flags.speed&&w.flags.function?40:0)+(w.flags.speed?chipSum(w.chips,'speed'):0);renderChips();const items=buildItems(),record=savedSearch();const evaluation=renderEvaluation(items,record?restoreSearch(items,record):null);if(record)$('exact-status').textContent='已恢复本地结果 · '+(record.exact?'当前候选及购买策略内最优':'搜索未完成，尚未证明最优')+' · 最快 '+duration(evaluation.best.time)+' · 保存于 '+new Date(record.savedAt).toLocaleString('zh-CN')+(record.exact?'。':'；重新搜索会沿用这条路线。');$('calc-entropy').value=metrics(evaluation.best.state,evaluation.best.time<evaluation.best.votUntil).entropy;renderFlow(items,evaluation.best);renderCalc();}
+
+function backupData(){
+  const searchResults={};
+  for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key===SEARCH_KEY||key.startsWith(SEARCH_KEY+':')){const record=readSearchRecord(key);if(record)searchResults[key]=record}}
+  if(exactJob)searchResults[exactJob.storageKey]={order:exactJob.best.rows.map(x=>x.a.id),exact:!!exactJob.best.exact,nodes:exactJob.nodes,threads:exactJob.workers.length,savedAt:new Date().toISOString()};
+  return {format:'growth-planner-backup',version:1,exportedAt:new Date().toISOString(),config:structuredClone(data),searchResults};
+}
+function validateBackup(text){
+  const pack=JSON.parse(text),c=pack.config;
+  if(pack.format!=='growth-planner-backup'||pack.version!==1||!c||!Array.isArray(c.weapons)||!c.weapons.length||!c.rules||typeof c.rules!=='object'||Array.isArray(c.rules)||!pack.searchResults||typeof pack.searchResults!=='object'||Array.isArray(pack.searchResults))throw Error('这不是受支持的规划器备份文件');
+  const ids=new Set();
+  for(const w of c.weapons){
+    if(!w||typeof w.id!=='string'||ids.has(w.id)||typeof w.name!=='string'||!w.flags||typeof w.flags!=='object'||!w.done||typeof w.done!=='object'||!Array.isArray(w.chips)||w.chips.length!==6||w.chips.some(n=>!Number.isInteger(n)||n<0||n>36)||!(w.interval>0)||!['chips','overload'].includes(w.damagePlan))throw Error('备份中的枪械配置不完整');
+    ids.add(w.id);
+  }
+  if(!ids.has(c.selected))throw Error('备份中的当前枪械不存在');
+  if(Object.keys(pack.searchResults).some(key=>key!==SEARCH_KEY&&!key.startsWith(SEARCH_KEY+':')))throw Error('备份包含无法识别的搜索数据');
+  return pack;
+}
+function queueFileSave(){if(dataFileHandle&&fileSaveTimer===null)fileSaveTimer=setTimeout(()=>{fileSaveTimer=null;flushFileSave()},1000)}
+function flushFileSave(){
+  clearTimeout(fileSaveTimer);fileSaveTimer=null;
+  const target=dataFileHandle;if(!target)return fileWrite;
+  const contents=JSON.stringify(backupData(),null,2);
+  fileWrite=fileWrite.then(async()=>{
+    let writer;
+    try{writer=await target.createWritable();await writer.write(contents);await writer.close();if(dataFileHandle===target)$('file-status').textContent='已自动保存到 '+target.name+' · '+new Date().toLocaleTimeString('zh-CN');return true}
+    catch(e){if(writer)await writer.abort().catch(()=>{});if(dataFileHandle===target)$('file-status').textContent='文件保存失败：'+e.message+'。可点击“导出完整备份”另存。'}
+  });
+  return fileWrite;
+}
+async function importBackupText(text){
+  const pack=validateBackup(text); // Validate before touching current data or stopping a search.
+  const imported=[];try{
+    // Store imported search records under fresh keys, so an older backup cannot
+    // overwrite a newer search result already present in this browser.
+    for(const [key,value]of Object.entries(pack.searchResults)){
+      if(key===SEARCH_KEY){for(const [signature,record]of Object.entries(value)){const dest=searchPrefix(signature)+'import-'+crypto.randomUUID();localStorage.setItem(dest,JSON.stringify(record));imported.push(dest)}}
+      else{const dest=key+'-import-'+crypto.randomUUID();localStorage.setItem(dest,JSON.stringify(value));imported.push(dest)}
+    }
+    localStorage.setItem(KEY,JSON.stringify(pack.config));
+  }catch(e){imported.forEach(key=>localStorage.removeItem(key));throw Error('无法保存导入数据：'+e.message)}
+  cancelExact();await flushFileSave();dataFileHandle=null;$('unbind-data-file').hidden=true;
+  data=pack.config;renderHome();if(!$('config-view').hidden)renderConfig();
+  $('file-status').textContent='已导入 '+data.weapons.length+' 把枪械及备份中的搜索结果；当前未连接自动保存文件。';
+}
+function exportBackup(){
+  const url=URL.createObjectURL(new Blob([JSON.stringify(backupData(),null,2)],{type:'application/json'})),a=document.createElement('a');
+  a.href=url;a.download='发育规划器备份-'+new Date().toISOString().replace(/[:.]/g,'-')+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  $('file-status').textContent='已发起完整备份下载，请在浏览器下载记录中确认JSON文件已保存。'+(dataFileHandle?'自动保存仍连接 '+dataFileHandle.name+'。':'');
+}
+function fileError(e){if(e.name!=='AbortError')$('file-status').textContent='文件操作未完成：'+e.message+'。可使用导出／导入备份。'}
+function bindFileControls(){
+const jsonFileTypes=[{description:'规划器JSON备份',accept:{'application/json':['.json']}}];
+$('export-data').onclick=exportBackup;
+$('import-data').onclick=()=>$('data-file-input').click();
+$('data-file-input').onchange=async event=>{const file=event.target.files[0];if(!file)return;try{await importBackupText(await file.text())}catch(e){fileError(e)}event.target.value=''};
+$('bind-data-file').onclick=async()=>{try{const handle=await window.showSaveFilePicker({suggestedName:'发育规划器数据.json',types:jsonFileTypes});await flushFileSave();dataFileHandle=handle;$('unbind-data-file').hidden=false;await flushFileSave()}catch(e){fileError(e)}};
+$('open-data-file').onclick=async()=>{try{const [handle]=await window.showOpenFilePicker({types:jsonFileTypes,multiple:false});await importBackupText(await (await handle.getFile()).text());dataFileHandle=handle;$('unbind-data-file').hidden=false;await flushFileSave()}catch(e){fileError(e)}};
+$('unbind-data-file').onclick=async()=>{const saved=await flushFileSave();dataFileHandle=null;$('unbind-data-file').hidden=true;$('file-status').textContent=saved?'已保存最后一份数据并停止文件自动保存；仍使用浏览器本地存储。':'已停止文件自动保存；最后一次文件写入未成功，请导出备份。'};
+if(!window.showSaveFilePicker||!window.showOpenFilePicker){$('bind-data-file').hidden=true;$('open-data-file').hidden=true;$('file-status').textContent='当前浏览器未提供文件自动保存接口，可用“导出完整备份／导入备份”保存独立JSON文件。'}
+
+}
+$('exact-start').onclick=startExact;
+bindFileControls();
+$('exact-stop').onclick=()=>{const job=exactJob;if(!job)return;cancelExact();applyExactResult(job.items,job.best);$('exact-status').textContent='已停止，采用目前最快路线 '+duration(job.best.time)+'；尚未证明最优。'+(job.saved?'结果已保存本地，刷新可恢复。':'本地保存失败。')};
+$('home-tab').onclick=()=>setView(false);$('config-tab').onclick=()=>setView(true);$('edit-weapon').onclick=()=>setView(true);$('save-config').onclick=saveConfig;$('save-bottom').onclick=saveConfig;
+for(const id of ['weapon-select','config-select'])$(id).onchange=()=>{data.selected=$(id).value;save();renderHome();if(id==='config-select')renderConfig()};
+$('add-weapon').onclick=()=>{const w=makeWeapon();data.weapons.push(w);data.selected=w.id;save();renderHome();renderConfig()};
+for(const [id,key] of [['quick-damage','damage'],['quick-factor','progressFactor']])$(id).onchange=()=>{weapon()[key]=$(id).value===''?null:Number($(id).value);save();renderHome()};
+$('suggest-chips').onclick=()=>{ $('chip-result').textContent='正在按实际形状组合芯片…';setTimeout(suggestChips,30)};
+for(const id of ['initial','calc-bonus','calc-entropy'])$(id).addEventListener('input',renderCalc);
+renderHome();
+</script></html>
+
+
+
